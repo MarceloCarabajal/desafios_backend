@@ -44,7 +44,6 @@ export default class ProductManager {
             //agrego nuevo producto 
             products.push(product);
             await fs.promises.writeFile(this.path, JSON.stringify(products));
-            return product; 
         } catch (error) {
             console.log(error);
         }        
@@ -113,24 +112,24 @@ export default class ProductManager {
 
 }
 
-//instancio ProductManager
-const productManager = new ProductManager(path);
+// //instancio ProductManager
+// const productManager = new ProductManager(path);
 
-//instancio Product
-const product1 = new Product("Laptop", "Laptop", 900000, "https://www.nextclick.com.ar/Temp/App_WebSite/App_PictureFiles/Items/0196804274027_800.jpg", "10", 5);
-const product2 = new Product("Teclado", "Teclado Redragon", 60000, "https://redragon.es/content/uploads/2021/05/K552-KR-SPS-KUMARA-RAINBOW-SPAIN1.png", "20", 10);
-const product3 = new Product("Mouse", "Mouse Redragon", 40000, "https://redragon.es/content/uploads/2021/04/GRIFFIN-B.png", "30", 10);
+// //instancio Product
+// const product1 = new Product("Laptop", "Laptop", 900000, "https://www.nextclick.com.ar/Temp/App_WebSite/App_PictureFiles/Items/0196804274027_800.jpg", "10", 5);
+// const product2 = new Product("Teclado", "Teclado Redragon", 60000, "https://redragon.es/content/uploads/2021/05/K552-KR-SPS-KUMARA-RAINBOW-SPAIN1.png", "20", 10);
+// const product3 = new Product("Mouse", "Mouse Redragon", 40000, "https://redragon.es/content/uploads/2021/04/GRIFFIN-B.png", "30", 10);
 
 
-const test = async() => {
-    //creo archivo JSON vacio
-    await fs.promises.writeFile(path, "[]");
-    //listo array de productos que deberia estar vacio
-    console.log(await productManager.getProducts());
-    //agrego productos
-    await productManager.addProduct(product1);
-    await productManager.addProduct(product2);
-    await productManager.addProduct(product3);
-}
+// const test = async() => {
+//     //creo archivo JSON vacio
+//     await fs.promises.writeFile(path, "[]");
+//     //listo array de productos que deberia estar vacio
+//     console.log(await productManager.getProducts());
+//     //agrego productos
+//     await productManager.addProduct(product1);
+//     await productManager.addProduct(product2);
+//     await productManager.addProduct(product3);
+// }
 
-test();
+// test();

@@ -27,13 +27,13 @@ export default class ProductManager {
     constructor(path){
     this.path = path;
     }
-    addProduct = async(product) => {
+    addProduct = async(obj) => {
         try {
             //obtengo productos actuales
             let products = await this.getProducts();
             //verifico codigo que no este repetido
-            if(products.some(p => p.code === product.code)){
-                console.log(`el codigo de producto ${product.code} ya existe`);
+            if(products.some(p => p.code === obj.code)){
+                console.log(`el codigo de producto ${obj.code} ya existe`);
                 return;
             }
             //verifico que todos los campos esten completados
@@ -42,8 +42,12 @@ export default class ProductManager {
                 return;
             }
             //agrego nuevo producto 
+            const product = new Product(obj.title, obj.description, obj.price, obj.thumbnail, obj.code, obj.stock); //uso la clase Product para que genere ID único para c/produco
+            const productExist = products.find(p => p.id === product.id)
+            if(productExist) return null
             products.push(product);
             await fs.promises.writeFile(this.path, JSON.stringify(products));
+            return product;
         } catch (error) {
             console.log(error);
         }        
@@ -70,28 +74,29 @@ export default class ProductManager {
             if(productExist){
                 return productExist;
             } else {
-                console.log('No existe producto');
+                //console.log('No existe producto');
+                return null;
             }
         } catch (error) {
             console.log(error);
         }
     }
 
-    updateProduct = async(productId, entry, newValue) => {
+    updateProduct = async(productId, newProductData) => {
         try {
             const products = await this.getProducts();
             const index = products.findIndex(p => p.id === productId);
             if(index=== -1){
                 console.log(`No existe producto con id: ${productId}`);
-                return;
+                return null;
             }
                 
             const product = products[index];
-            product[entry] = newValue; //actualiza el campo especificado
+            products[index] = {...product, ...newProductData}; //actualiza el producto con los nuevos datos
     
             await fs.promises.writeFile(this.path, JSON.stringify(products));
             console.log(`se actualizo producto con id ${productId}`);
-            return product;
+            return products[index];
         } catch (error) {
             console.log(error);
         }
@@ -100,11 +105,17 @@ export default class ProductManager {
     deleteProduct = async(productId) => {
         try {
             const products = await this.getProducts();
-            const product = products.filter(p => p.id !== productId);
-            await fs.promises.writeFile(path, JSON.stringify(product));
-            console.log(`producto con id ${productId} eliminado`);
-            return product;
-            //return product;
+            if(products.length > 0) {
+                const productExist = await this.getProductById(productId);
+                if(productExist){
+                    const product = products.filter(p => p.id !== productId);
+                    await fs.promises.writeFile(path, JSON.stringify(product));
+                    console.log(`producto con id ${productId} eliminado`);
+                    return product;
+                } else {
+                    return null;
+                }
+            } return null;
         } catch (error) {
             console.log(error);
         }
@@ -116,7 +127,7 @@ export default class ProductManager {
 // const productManager = new ProductManager(path);
 
 // //instancio Product
-// const product1 = new Product("Laptop", "Laptop", 900000, "https://www.nextclick.com.ar/Temp/App_WebSite/App_PictureFiles/Items/0196804274027_800.jpg", "10", 5);
+// const product1 = new Product("Laptop", "Laptop Dell", 900000, "https://www.nextclick.com.ar/Temp/App_WebSite/App_PictureFiles/Items/0196804274027_800.jpg", "10", 5);
 // const product2 = new Product("Teclado", "Teclado Redragon", 60000, "https://redragon.es/content/uploads/2021/05/K552-KR-SPS-KUMARA-RAINBOW-SPAIN1.png", "20", 10);
 // const product3 = new Product("Mouse", "Mouse Redragon", 40000, "https://redragon.es/content/uploads/2021/04/GRIFFIN-B.png", "30", 10);
 

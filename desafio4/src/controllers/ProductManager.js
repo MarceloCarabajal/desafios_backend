@@ -1,16 +1,17 @@
-//DESAFIO 4
 import fs from 'fs';
-const path = './src/manager/products.json';
+const path = './src/models/products.json';
 
 class Product {
-    constructor(title, description, price, thumbnail, code, stock){
+    constructor(title, description, category, price, thumbnail, code, stock, status){
         this.id = Product.addId(),
         this.title = title;
+        this.category = category;
         this.description = description;
         this.price = price;
         this.thumbnail = thumbnail;
         this.code = code;
         this.stock = stock;
+        this.status = status;
     }
     //genero id autoincromentable
     static addId(){
@@ -42,7 +43,7 @@ export default class ProductManager {
                 return;
             }
             //agrego nuevo producto 
-            const product = new Product(obj.title, obj.description, obj.price, obj.thumbnail, obj.code, obj.stock); //uso la clase Product para que genere ID único para c/produco
+            const product = new Product(obj.title, obj.description, obj.category, obj.price, obj.thumbnail, obj.code, obj.stock, obj.status=true); //uso la clase Product para que genere ID único para c/produco
             const productExist = products.find(p => p.id === product.id)
             if(productExist) return null
             products.push(product);
@@ -127,9 +128,9 @@ export default class ProductManager {
 // const productManager = new ProductManager(path);
 
 // //instancio Product
-// const product1 = new Product("Laptop", "Laptop Dell", 900000, "https://www.nextclick.com.ar/Temp/App_WebSite/App_PictureFiles/Items/0196804274027_800.jpg", "10", 5);
-// const product2 = new Product("Teclado", "Teclado Redragon", 60000, "https://redragon.es/content/uploads/2021/05/K552-KR-SPS-KUMARA-RAINBOW-SPAIN1.png", "20", 10);
-// const product3 = new Product("Mouse", "Mouse Redragon", 40000, "https://redragon.es/content/uploads/2021/04/GRIFFIN-B.png", "30", 10);
+// const product1 = new Product("Laptop", "informatica",v"Laptop Lenovo", 900000, "https://www.nextclick.com.ar/Temp/App_WebSite/App_PictureFiles/Items/0196804274027_800.jpg", "10", 5, true);
+// const product2 = new Product("Teclado", "informatica", "Teclado Redragon", 60000, "https://redragon.es/content/uploads/2021/05/K552-KR-SPS-KUMARA-RAINBOW-SPAIN1.png", "20", 10, true);
+// const product3 = new Product("Mouse", "informatica", "Mouse Redragon", 40000, "https://redragon.es/content/uploads/2021/04/GRIFFIN-B.png", "30", 10, true);
 
 
 // const test = async() => {

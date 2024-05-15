@@ -28,12 +28,12 @@ socketClient.on('getProducts', products => {
         prodsFromServer.innerHTML +=
         `
         <div>
-        <h5>${product.title}</h5>
-            <p>${product.category}</p>
-            <p>${product.description}</p>
-            <p>${product.price}</p>
-            <p>${product.code}</p>
-            <p>${product.stock}</p>
+        <h5>Producto: ${product.title}</h5>
+            <p>Categoría: ${product.category}</p>
+            <p>Descripción: ${product.description}</p>
+            <p>Precio: $${product.price}</p>
+            <p>Código: ${product.code}</p>
+            <p>Stock: ${product.stock}</p>
             <p>${product.thumbnail}</p>
         </div>
         `

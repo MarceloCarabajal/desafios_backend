@@ -5,7 +5,7 @@ import { __dirname } from './utils.js';
 import morgan from 'morgan';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { engine } from 'express-handlebars';
-import viewsRouter from './routes/views.rotuer.js';
+import viewsRouter from './routes/views.router.js';
 import { Server } from 'socket.io';
 import ProductManager from './controllers/ProductManager.js';
 

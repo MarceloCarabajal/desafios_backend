@@ -12,7 +12,7 @@ addForm.addEventListener('submit', (e) => {
     const stock = document.getElementById('stock').value;
     const thumbnail = [];
     const product = {title, category, description, price, code, stock, thumbnail};
-    socketClient.emit('AddProduct', product); //envio info a mi servidor
+    socketClient.emit('addProduct', product); //envio info a mi servidor
 })
 
 socketClient.on("msgAddProduct", mensaje => {

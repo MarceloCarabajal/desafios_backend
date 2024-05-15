@@ -10,16 +10,6 @@ viewsRouter.get('/', async (req, res) => {
     res.render('home', {allProducts});
 });
 
-// viewsRouter.get('/:id', async (req, res) => {
-//     const { id } = req.params;
-//     let prod = await productManager.getProductById(parseInt(id));
-//     res.render('prodById', {
-//         title: "Backend | Carabajal",
-//         product: prod
-//     });
-// });
-
-
 viewsRouter.get('/realtimeproducts', async (req, res) => {
     let allProducts = await productManager.getProducts();
     res.render('realtimeproducts', {

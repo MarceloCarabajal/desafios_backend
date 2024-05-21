@@ -35,7 +35,12 @@ socketClient.on('getProducts', products => {
             <p>Código: ${product.code}</p>
             <p>Stock: ${product.stock}</p>
             <p>${product.thumbnail}</p>
+            <button onclick="deleteProduct('${product.id}')">Eliminar</button>
         </div>
         `
     })
-})
+});
+
+deleteProduct = (id) => {
+    socketClient.emit('deleteProduct', id);
+}

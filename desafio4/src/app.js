@@ -29,15 +29,20 @@ socketServer.on('connection', async (socket) => { //socketServer.on es cuando se
         console.log('Cliente desconectado');
     });
 
-    // socket.on('nuevoProducto', (prod) => {
-    //     products.push(prod);
-    //     socketServer.emit('products', products);
-    // });
-
     socket.on('addProduct', async (prod) => {
-        socketServer.emit('msgAddProduct', await productManager.addProduct(prod));
-        socketServer.emit('getProducts', await productManager.getProducts());
+        const newProduct = await productManager.addProduct(prod);
+        if(newProduct){
+            socket.emit('msgAddProduct', JSON.stringify(newProduct));
+            socketServer.emit('getProducts', await productManager.getProducts());
+        } else {
+            socketServer.emit('msgAddProduct', JSON.stringify({ error: 'No se pudo agregar el producto'}));
+        }
     })
+
+    socket.on('deleteProduct', async (productId) => {
+        await productManager.deleteProduct(productId);
+        socketServer.emit('getProducts', await productManager.getProducts());
+    });
 
     socket.emit('getProducts', await productManager.getProducts());
 })
@@ -67,11 +72,6 @@ app.use('/', viewsRouter);
 
 //Middlewares
 app.use(errorHandler);
-
-
-
-
-
 
 
 /*

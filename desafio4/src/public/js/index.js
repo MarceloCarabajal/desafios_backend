@@ -15,12 +15,27 @@ addForm.addEventListener('submit', (e) => {
     socketClient.emit('addProduct', product); //envio info a mi servidor
 })
 
-socketClient.on("msgAddProduct", mensaje => {
-    if(mensaje) console.log(mensaje);
-    else console.log("No se pudo agregar el producto");
+socketClient.on("msgAddProduct", (mensaje) => {
+    if(mensaje.success) {
+        Swal.fire({
+            icon: "success",
+            title: "Product Added",
+            text: "Product Added successfully",
+            showConfirmButton: false,
+            timer: 1500
+        });
+        //vaciar los campos del formulario
+        addForm.reset();  
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: mensaje.error,
+        });
+    }
 })
 
-socketClient.on('getProducts', products => {
+socketClient.on('getProducts', (products) => {
     const prodsFromServer = document.getElementById('productsFromServer')
     prodsFromServer.innerHTML = '';
 

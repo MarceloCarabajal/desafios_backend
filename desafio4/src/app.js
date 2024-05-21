@@ -30,12 +30,12 @@ socketServer.on('connection', async (socket) => { //socketServer.on es cuando se
     });
 
     socket.on('addProduct', async (prod) => {
-        const newProduct = await productManager.addProduct(prod);
-        if(newProduct){
-            socket.emit('msgAddProduct', JSON.stringify(newProduct));
+        try {
+            const newProduct = await productManager.addProduct(prod);
+            socket.emit('msgAddProduct', { success: true, product: newProduct});
             socketServer.emit('getProducts', await productManager.getProducts());
-        } else {
-            socketServer.emit('msgAddProduct', JSON.stringify({ error: 'No se pudo agregar el producto'}));
+        } catch (error) {
+            socket.emit('msgAddProduct', { success: false, error: error.message})
         }
     })
 

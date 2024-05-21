@@ -33,12 +33,10 @@ export default class ProductManager {
         try {
             let products = await this.getProducts();
             if (products.some(p => p.code === obj.code)) {
-                console.log(`El código de producto ${obj.code} ya existe`);
-                return;
+                throw new Error(`El código de producto ${obj.code} ya existe`);
             }
             if (Object.values(obj).some(value => value === "" || value === null || value === undefined)) {
-                console.log("Los campos no pueden estar vacíos");
-                return;
+                throw new Error("Los campos no pueden estar vacíos");
             }
             const product = new Product(obj.title, obj.description, obj.category, obj.price, obj.thumbnail, obj.code, obj.stock, true);
             products.push(product);
@@ -46,6 +44,7 @@ export default class ProductManager {
             return product;
         } catch (error) {
             console.log(error);
+            throw error;
         }
     }
 
@@ -59,6 +58,7 @@ export default class ProductManager {
             }
         } catch (error) {
             console.log(error);
+            throw error;
         }
     }
 
@@ -68,6 +68,7 @@ export default class ProductManager {
             return products.find(product => product.id === productId) || null;
         } catch (error) {
             console.log(error);
+            throw error;
         }
     }
 
@@ -76,8 +77,7 @@ export default class ProductManager {
             const products = await this.getProducts();
             const index = products.findIndex(p => p.id === productId);
             if (index === -1) {
-                console.log(`No existe producto con id: ${productId}`);
-                return null;
+                throw new Error(`No existe producto con id: ${productId}`);
             }
             products[index] = { ...products[index], ...newProductData };
             await fs.promises.writeFile(this.path, JSON.stringify(products));
@@ -85,6 +85,7 @@ export default class ProductManager {
             return products[index];
         } catch (error) {
             console.log(error);
+            throw error;
         }
     }
 
@@ -97,6 +98,7 @@ export default class ProductManager {
             return newProducts;
         } catch (error) {
             console.log(error);
+            throw error;
         }
     }
 }

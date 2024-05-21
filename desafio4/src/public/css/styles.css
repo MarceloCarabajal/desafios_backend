@@ -86,3 +86,41 @@ form button:hover {
 #productsFromServer button:hover {
     background-color: #c82333;
 }
+
+
+/* home styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+}
+
+.product {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.product p {
+    margin: 5px 0;
+}
+
+.product p strong {
+    color: #555;
+}
+
+.product img {
+    max-width: 100px;
+    height: auto;
+    display: block;
+    margin: 10px 0;
+}

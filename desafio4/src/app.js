@@ -40,8 +40,12 @@ socketServer.on('connection', async (socket) => { //socketServer.on es cuando se
     })
 
     socket.on('deleteProduct', async (productId) => {
-        await productManager.deleteProduct(productId);
-        socketServer.emit('getProducts', await productManager.getProducts());
+        try {
+            await productManager.deleteProduct(productId);
+            socketServer.emit('getProducts', await productManager.getProducts());
+        } catch (error) {
+            socket.emit('msgDeleteProduct', { success: false, error: error.message });
+        }
     });
 
     socket.emit('getProducts', await productManager.getProducts());

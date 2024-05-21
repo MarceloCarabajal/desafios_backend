@@ -15,18 +15,32 @@ class Product {
     }
 
     static addId() {
-        if (this.idIncremental) {
+        if (!this.idIncremental) {
+            this.idIncremental = 1;
+        } else {
             this.idIncremental++;
+        }
+        return this.idIncremental;
+    }
+
+    static setInitialId(products){
+        if (products.length > 0) {
+            this.idIncremental = Math.max(...products.map(p => p.id)) + 1;
         } else {
             this.idIncremental = 1;
         }
-        return this.idIncremental;
     }
 }
 
 export default class ProductManager {
     constructor(path) {
         this.path = path;
+        this.initialize();
+    }
+
+    initialize = async () => {
+        const products = await this.getProducts();
+        Product.setInitialId(products);
     }
 
     addProduct = async (obj) => {
@@ -65,7 +79,7 @@ export default class ProductManager {
     getProductById = async (productId) => {
         try {
             const products = await this.getProducts();
-            return products.find(product => product.id === productId) || null;
+            return products.find(product => product.id === pasrseInt(productId)) || null;
         } catch (error) {
             console.log(error);
             throw error;
@@ -93,7 +107,11 @@ export default class ProductManager {
         try {
             const products = await this.getProducts();
             const newProducts = products.filter(p => p.id !== parseInt(productId));
-            await fs.promises.writeFile(this.path, JSON.stringify(newProducts));
+
+            if(newProducts.length === products.length) {
+                throw new Error(`No existe producto con id: ${productId}`);
+            }
+            await fs.promises.writeFile(this.path, JSON.stringify(newProducts, null, 2));
             console.log(`Producto con id ${productId} eliminado`);
             return newProducts;
         } catch (error) {

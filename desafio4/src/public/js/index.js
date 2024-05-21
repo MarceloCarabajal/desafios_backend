@@ -33,6 +33,24 @@ socketClient.on("msgAddProduct", (mensaje) => {
             text: mensaje.error,
         });
     }
+});
+
+socketClient.on("msgDeleteProduct", (mensaje) => {
+    if (mensaje.success) {
+        Swal.fire({
+            icon: "success",
+            title: "Product Deleted",
+            text: "Product Deleted successfully",
+            showConfirmButton: false,
+            timer: 1500
+        });
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: mensaje.error,
+        });
+    }
 })
 
 socketClient.on('getProducts', (products) => {

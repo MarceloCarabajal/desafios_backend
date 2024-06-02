@@ -1,9 +1,9 @@
-import ProductDaoMongoDB from "../dao/mongodb/product.dao.js";
-const prodDao = new ProductDaoMongoDB();
+// import ProductDaoMongoDB from "../dao/mongodb/product.dao.js";
+// const prodDao = new ProductDaoMongoDB();
 
-// import { __dirname } from "../utils";
-// import ProductDaoFS from "../dao/filesystem/product.dao.js";
-// const prodDaoFS = new ProductDaoFS(`${__dirname}/dao/filesystem/products.json`);
+import { __dirname } from "../utils.js";
+import ProductDaoFS from "../dao/filesystem/product.dao.js";
+const prodDao = new ProductDaoFS(`${__dirname}/dao/filesystem/products.json`);
 
 export const getAll = async() => {
     try {

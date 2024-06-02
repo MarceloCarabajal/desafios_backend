@@ -3,6 +3,7 @@ import express from 'express';
 import morgan from 'morgan'
 import productsRouter from './routes/producst.router.js';
 import {errorHandler} from './middlewares/errorHandler.js';
+import 'dotenv/config';
 
 //express
 const app = express(); //app es igual a la ejecucion de express
@@ -20,4 +21,4 @@ app.use("/products", productsRouter)
 //middlewares
 app.use(errorHandler);
 
-initMongoDB();
+if(process.env.PERSISTENCE === 'MONGO') initMongoDB();

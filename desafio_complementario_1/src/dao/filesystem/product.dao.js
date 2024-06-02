@@ -39,13 +39,13 @@ export default class ProductDaoFS {
     }
 
     initialize = async () => {
-        const products = await this.getProducts();
+        const products = await this.getAll();
         Product.setInitialId(products);
     }
 
-    addProduct = async (obj) => {
+    create = async (obj) => {
         try {
-            let products = await this.getProducts();
+            let products = await this.getAll();
             if (products.some(p => p.code === obj.code)) {
                 throw new Error(`El código de producto ${obj.code} ya existe`);
             }
@@ -62,7 +62,7 @@ export default class ProductDaoFS {
         }
     }
 
-    getProducts = async () => {
+    getAll = async () => {
         try {
             if (fs.existsSync(this.path)) {
                 let products = await fs.promises.readFile(this.path, 'utf-8');
@@ -76,9 +76,9 @@ export default class ProductDaoFS {
         }
     }
 
-    getProductById = async (productId) => {
+    getById = async (productId) => {
         try {
-            const products = await this.getProducts();
+            const products = await this.getAll();
             return products.find(product => product.id === pasrseInt(productId)) || null;
         } catch (error) {
             console.log(error);
@@ -86,9 +86,9 @@ export default class ProductDaoFS {
         }
     }
 
-    updateProduct = async (productId, newProductData) => {
+    update = async (productId, newProductData) => {
         try {
-            const products = await this.getProducts();
+            const products = await this.getAll();
             const index = products.findIndex(p => p.id === productId);
             if (index === -1) {
                 throw new Error(`No existe producto con id: ${productId}`);
@@ -103,9 +103,9 @@ export default class ProductDaoFS {
         }
     }
 
-    deleteProduct = async (productId) => {
+    delete = async (productId) => {
         try {
-            const products = await this.getProducts();
+            const products = await this.getAll();
             const newProducts = products.filter(p => p.id !== parseInt(productId));
 
             if(newProducts.length === products.length) {

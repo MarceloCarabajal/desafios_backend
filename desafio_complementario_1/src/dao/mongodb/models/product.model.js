@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const productCollectionName = 'product';
+const productCollection = 'product';
 
 const productSchema = new mongoose.Schema({
     name: { type: String, required: true, max: 30},
@@ -10,7 +10,7 @@ const productSchema = new mongoose.Schema({
 });
 
 export const ProductModel = mongoose.model(
-    productCollectionName, 
+    productCollection, 
     productSchema
 );
 

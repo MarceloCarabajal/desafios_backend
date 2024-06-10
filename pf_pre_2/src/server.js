@@ -4,8 +4,8 @@ import morgan from 'morgan'
 import {errorHandler} from './middlewares/errorHandler.js';
 import 'dotenv/config';
 import { configureSocket} from './socketConfig.js';
-import productsRouter from './routes/products.router.js';
-import cartsRouter from './routes/carts.router.js';
+import productsRouter from './routes/product.router.js';
+import cartsRouter from './routes/cart.router.js';
 import chatRouter from './routes/chat.router.js';
 import { __dirname } from './utils.js';
 

@@ -5,7 +5,7 @@ export const getAll = async (req, res, next) => {
     const carts = await service.getAll();
     res.status(200).json(carts);
   } catch (error) {
-    next(error.message);
+    next(error);
   }
 };
 
@@ -16,17 +16,18 @@ export const getById = async (req, res, next) => {
     if (!cart) res.status(404).json({ msg: "cart not found" });
     else res.status(200).json(cart);
   } catch (error) {
-    next(error.message);
+    next(error);
   }
 };
 
 export const create = async (req, res, next) => {
   try {
-    const cart = await service.create(req.body);
+    const cartData = req.body;
+    const newCart = await service.create(cartData);
     if (!cart) res.status(400).json({ msg: "Bad request" });
     res.status(200).json(cart);
   } catch (error) {
-    next(error.message);
+    next(error);
   }
 };
 export const addProduct = async (req, res, next) => {
@@ -37,7 +38,7 @@ export const addProduct = async (req, res, next) => {
     if (!cart) res.status(400).json({ msg: "Bad request" });
     res.status(200).json(cart);
   } catch (error) {
-    next(error.message);
+    next(error);
   }
 };
 
@@ -48,7 +49,7 @@ export const addManyProduct = async (req, res, next) => {
     if(!cart) res.status(400).json({ msg: "Bad request" });
     res.status(200).json(cart);
   } catch (error) {
-    next(error.message);
+    next(error);
   }
 };
 
@@ -58,7 +59,7 @@ export const delProduct = async () => {
     const cart = await service.delProduct(cid, pid);
     if(!cart) res.status(400).json( { msg: 'Bad request' });
   } catch (error) {
-    next(error.message);
+    next(error);
   }
 };
 
@@ -67,9 +68,9 @@ export const remove = async (req, res, next) => {
     const { cid } = req.params;
     const cart = await service.remove(cid);
     if (!cart) res.status(404).json({ msj: "Error removing cart" });
-    else res.status(201).json(cart);
+    else res.status(200).json(cart);
   } catch (error) {
-    next(error.message);
+    next(error);
   }
 };
 
@@ -78,8 +79,8 @@ export const cleanCart =async (req, res, next ) => {
     const { cid } = req.params;
     const cart = await service.cleanCart(cid);
     if (!cart) res.status(404).json({ msj: "Error cleaning cart" });
-    else res.status(201).json(cart);
+    else res.status(200).json(cart);
   } catch (error) {
-    next(error.message);
+    next(error);
   }
 }

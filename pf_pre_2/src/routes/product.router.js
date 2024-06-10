@@ -14,6 +14,6 @@ router.put('/:id', controller.updateProduct);
 
 router.delete('/:id', controller.deleteProduct);
 
-router.delete('/', controller.deleteAllProducts); // Nueva ruta para eliminar todos los productos
+//router.delete('/', controller.deleteAllProducts); // Nueva ruta para eliminar todos los productos
 
 export default router;

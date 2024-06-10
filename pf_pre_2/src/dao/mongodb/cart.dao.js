@@ -32,55 +32,55 @@ export default class CartDaoMongoDB {
 
   addProduct = async (id, productId, quantity) => {
     try {
-      const { products } = await CartModel.findById(id, { products: true});
+      const cart = await CartModel.findById(id);
+      if (!cart) throw new Error(`Cart with id ${id} not found`);
 
-      const productAdded = products.some(
-        (element) = element.product.toString() === productId
-      );
-      if (!productAdded) {
-        const addedProduct = await CartModel.updateOne(
-          { _id: id },
-          { $push: { products: { product: productId, quantity: quantity } } },
-          { new: true }
-        );
-        if( !addedProduct.modifiedCount) return null;
-        else return await CartModel.findById(id)
+      const existingProduct = cart.products.find(p => p.product.toString() === productId);
+      if (existingProduct) {
+        existingProduct.quantity += quantity;
       } else {
-        const addProduct = await CartModel.updateOne(
-          {_id: id, "products.product": productId },
-          {$set: { "products.$.quantity": quantity } },
-          {new: true}
-        );
-        if(!addedProduct.modifiedCount) return null;
-        else return await CartModel.findById(id);
+        cart.products.push({ product: productId, quantity });
       }
+
+      await cart.save();
+      return cart;
     } catch (error) {
-      throw new Error (error);
+      throw new Error(error);
     }
   };
 
   addManyProduct = async (cid, products) => {
     try {
-      const repsonse = await CartModel.findByIdAndUpdate(cid, products, {
-        new: true,
-      });
-    } catch (error) {
-      throw new Error (error);
-    }
-  }
+      const cart = await CartModel.findById(cid);
+      if (!cart) throw new Error(`Cart with id ${cid} not found`);
 
-  delProduct = async (id, idProduct) => {
-    try {
-      const delProd = await CartModel.updateOne(
-        {
-          _id: id,
-        },
-        { $pull: {products: {product: productId}}}
-      );
-      if(!delProd.modifiedCount) return;
-      else return delProd;
+      products.forEach(({ productId, quantity }) => {
+        const existingProduct = cart.products.find(p => p.product.toString() === productId);
+        if (existingProduct) {
+          existingProduct.quantity += quantity;
+        } else {
+          cart.products.push({ product: productId, quantity });
+        }
+      });
+
+      await cart.save();
+      return cart;
     } catch (error) {
-      throw new Error (error);
+      throw new Error(error);
+    }
+  };
+
+  delProduct = async (id, productId) => {
+    try {
+      const cart = await CartModel.findById(id);
+      if (!cart) throw new Error(`Cart with id ${id} not found`);
+
+      cart.products = cart.products.filter(p => p.product.toString() !== productId);
+
+      await cart.save();
+      return cart;
+    } catch (error) {
+      throw new Error(error);
     }
   };
 
@@ -96,7 +96,7 @@ export default class CartDaoMongoDB {
     }
   };
 
-  cleanCart = async () => {
+  cleanCart = async (cid) => {
     try {
       const clearCart = await CartModel.findByIdAndUpdate(
         cid,

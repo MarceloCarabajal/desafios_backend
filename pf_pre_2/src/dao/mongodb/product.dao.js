@@ -4,13 +4,44 @@ export default class ProductDaoMongoDB {
     //     this.collection = model(collection, schema);
     // }
 
-    getAll = async (page = 1, limit = 10, name, sort) => {
+    getAll = async (page = 1, limit = 10, title, sort) => {
         try {
-            const filter = name ? { 'name': name} : {};
+            const query = title ? 
+                {
+                    'title': { $regex: title, $options: "i"}, //regex, filtra cualquier parte del titulo, options "i" para que sea NO case sensitive (no distinga entre mayusculas o minusculas)
+                } : {};
             let sortOrder = {};
-            if(sort) sortOrder.price = sort === 'asc' ? 1: sort === 'desc' ? -1 : null;
-            const response = await ProductModel.paginate(filter, { page, limit, sort });
+            if(sort) sortOrder.price = sort === 'asc' ? 1 : sort === 'desc' ? -1 : null;
+            const response = await ProductModel.paginate(query, { page, limit, sort: sortOrder });
             return response;
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
+
+    getAllWebSocket = async () => {
+        try {
+            return await ProductModel.find().lean();
+        }
+        catch {
+            throw new Error(error);
+        }
+    };
+
+    getAllWebSocketPaginated = async (title, page = 1, limit = 10, sort) => {
+        try {
+            const query = title ?
+            {
+                title: { $regex: title, $options: "i" }, //regex, filtra cualquier parte del titulo, options "i" para que sea NO case sensitive (no distinga entre mayusculas o minusculas)
+            } : {};
+
+            let order = {};
+            if (sort) order.price = sort === "asc" ? 1 : sort === "desc" ? -1 : null;
+            return await ProductModel.paginate( query, {
+                page,
+                limit,
+                sort: order,
+            });
         } catch (error) {
             throw new Error(error);
         }
@@ -19,6 +50,27 @@ export default class ProductDaoMongoDB {
     getById = async (id) => {
         try {
             return await ProductModel.findById(id);
+        } catch (error) {
+            throw new Error(error);
+        }
+    };
+
+    getByCategory = async (category, stock, page = 1, limit = 10, sort) => {
+        try {
+            const hasStock = stock ? Number(stock) : 0;
+            const query = category ? 
+            {
+                category: {$regex: category, $options: "i" },
+                stock: {$gte: hasStock },
+            } : {};
+
+            let order = {};
+            if (sort) order.price = sort === "asc" ? 1 : sort === "desc" ? -1 : null;
+            return await ProductModel.paginate(query, {
+                page,
+                limit,
+                sort: order,
+            });
         } catch (error) {
             throw new Error(error);
         }
@@ -48,5 +100,12 @@ export default class ProductDaoMongoDB {
         }
     }
 
+    deleteAll = async () => {
+        try {
+            return await ProductModel.deleteMany({});
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
 
 }

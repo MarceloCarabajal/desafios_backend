@@ -1,6 +1,6 @@
 import { ChatModel } from "./models/chat.model.js";
 
-export default class ChatDaoMongoDB{
+export default class MessageManager {
   async createMsg(obj) {
     try {
       const newMsg = await ChatModel.create(obj);

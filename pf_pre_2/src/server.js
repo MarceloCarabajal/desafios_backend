@@ -4,9 +4,9 @@ import morgan from 'morgan'
 import {errorHandler} from './middlewares/errorHandler.js';
 import 'dotenv/config';
 import { configureSocket} from './socketConfig.js';
-import productsRouter from './routes/producst.router.js';
+import productsRouter from './routes/products.router.js';
 import cartsRouter from './routes/carts.router.js';
-//import chatRouter from './routes/chat.router.js';
+import chatRouter from './routes/chat.router.js';
 import { __dirname } from './utils.js';
 
 //express
@@ -17,7 +17,7 @@ const httpServer = app.listen(PORT, () => {
 });
 
 //Socket.io
-//configureSocket(httpServer);
+configureSocket(httpServer);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -28,9 +28,7 @@ app.use(morgan('dev'));
 
 app.use("/products", productsRouter);
 app.use("/carts", cartsRouter);
-//app.use("/chat", chatRouter)
-
-//app.use("/products", productsRouter);
+app.use("/chat", chatRouter)
 
 //middlewares
 app.use(errorHandler);

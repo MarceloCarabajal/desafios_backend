@@ -6,7 +6,7 @@ const chatSchema = new mongoose.Schema({
     message: String
 });
 
-export const chatModel = new mongoose.model(
+export const ChatModel = new mongoose.model(
     chatCollection,
     chatSchema
 );

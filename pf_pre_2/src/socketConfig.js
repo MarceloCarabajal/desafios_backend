@@ -1,7 +1,7 @@
 import { Server } from "socket.io";
-import { __dirname } from "./utils.js";
+//import { __dirname } from "./utils.js";
 import MessageManager from "./dao/mongodb/chat.dao.js";
-import * as messageManager from "./services/chat.services.js";
+//import * as messageManager from "./services/chat.services.js";
 //import MessageManager from "./dao/filesystem/chat.dao.js"
 
 //const messageManager = new MessageManager(`${__dirname}/data/messages.json`);
@@ -11,7 +11,7 @@ export const configureSocket = (httpServer) => {
 
     socketServer.on('connection', async (socket) => {
         console.log(`🟢 Usuerio conectado: ${socket.id}`);
-        socketServer.emit('messages', await messageManager.getAll()); //emite a todos los clientes
+        socketServer.emit('messages', await MessageManager.getAll()); //emite a todos los clientes
     
         socket.on('disconnect', () => {
             console.log(`🔴 Usuario desconectado`, socket.id);
@@ -23,8 +23,8 @@ export const configureSocket = (httpServer) => {
         });
     
         socket.on('chatMessage', async (msg) => {
-            await messageManager.createMsg(msg);
-            socketServer.emit('messages', await messageManager.getAll()); //emite a todos los clientes
+            await MessageManager.createMsg(msg);
+            socketServer.emit('messages', await MessageManager.getAll()); //emite a todos los clientes
         });
 
         socket.on('startTyping', (user) => {

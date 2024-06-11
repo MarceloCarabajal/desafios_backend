@@ -3,15 +3,13 @@ export default class ProductDaoMongoDB {
     // constructor(collection, schema) {
     //     this.collection = model(collection, schema);
     // }
-
     getAll = async (page = 1, limit = 10, title, sort) => {
         try {
-            const query = title ? 
-                {
-                    'title': { $regex: title, $options: "i"}, //regex, filtra cualquier parte del titulo, options "i" para que sea NO case sensitive (no distinga entre mayusculas o minusculas)
-                } : {};
+            const query = title ? { 'title': { $regex: title, $options: "i"} } : {};//regex, filtra cualquier parte del titulo, options "i" para que sea NO case sensitive (no distinga entre mayusculas o minusculas)
+             
             let sortOrder = {};
             if(sort) sortOrder.price = sort === 'asc' ? 1 : sort === 'desc' ? -1 : null;
+            
             const response = await ProductModel.paginate(query, { page, limit, sort: sortOrder });
             return response;
         } catch (error) {
@@ -28,7 +26,7 @@ export default class ProductDaoMongoDB {
         }
     };
 
-    getAllWebSocketPaginated = async (title, page = 1, limit = 10, sort) => {
+    getAllWebSocketPaginated = async ( page = 1, limit = 10, title, sort) => {
         try {
             const query = title ?
             {

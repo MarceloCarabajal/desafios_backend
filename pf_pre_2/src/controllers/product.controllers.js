@@ -4,10 +4,10 @@ import * as service from "../services/product.services.js";
 
 export const getAllProducts = async (req, res, next) => {
     try {
-        const { title, page, limit, sort } = req.query;
+        const { page, limit, title, sort } = req.query;
         const hasTitle = title ? `&title=${title}` : "" ;
         const hasSort = sort ? `&sort=${sort}` : "" ;
-        let products = await service.getAll(title, page, limit, sort);
+        let products = await service.getAll(page, limit, title, sort);
 
         const nextLink = products.hasNextPage
             ? `http://localhost:8080/products?limit=${products.limit}&page=${products.nextPage}${hasTitle}${hasSort}`
@@ -18,6 +18,7 @@ export const getAllProducts = async (req, res, next) => {
         const response = {
             payload: products.docs,
             info: {
+                count: products.totalDocs,
                 totalPages: products.totalPages,
                 prevPage: products.prevPage,
                 nextPage: products.nextPage,

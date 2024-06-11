@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { CartModel } from "./models/cart.model.js";
 
 export default class CartDaoMongoDB {
@@ -30,25 +31,34 @@ export default class CartDaoMongoDB {
     }
   };
 
-  addProduct = async (id, productId, quantity) => {
+  addProduct = async (cartId, productId, quantity) => {
     try {
-      const cart = await CartModel.findById(id);
-      if (!cart) throw new Error(`Cart with id ${id} not found`);
+      // Buscar el carrito por su ID
+      const cart = await CartModel.findById(cartId);
+      if (!cart) {
+        throw new Error(`Cart with id ${cartId} not found`);
+      }
 
-      const existingProduct = cart.products.find(p => p.product.toString() === productId);
-      if (existingProduct) {
-        existingProduct.quantity += quantity;
+      // Verificar si el producto ya está en el carrito
+      const existingProductIndex = cart.products.findIndex(p => p.product.toString() === productId);
+      if (existingProductIndex !== -1) {
+        // Si el producto ya existe, sumar la cantidad
+        cart.products[existingProductIndex].quantity += quantity;
       } else {
+        // Si el producto no existe, agregarlo al carrito
         cart.products.push({ product: productId, quantity });
       }
 
+      // Guardar los cambios en el carrito
       await cart.save();
+
+      // Devolver el carrito actualizado
       return cart;
     } catch (error) {
       throw new Error(error);
     }
   };
-
+  
   addManyProduct = async (cid, products) => {
     try {
       const cart = await CartModel.findById(cid);

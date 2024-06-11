@@ -5,9 +5,9 @@ const prodDao = new ProductDaoMongoDB();
 // import ProductDaoFS from "../dao/filesystem/product.dao.js";
 // const prodDao = new ProductDaoFS(`${__dirname}/data/products.json`);
 
-export const getAll = async(title, page, limit, sort) => {
+export const getAll = async(page, limit, title, sort) => {
     try {
-        return await prodDao.getAll(title, page, limit, sort);
+        return await prodDao.getAll(page, limit, title, sort);
     } catch (error) {
         throw new Error(error);
     }
@@ -21,9 +21,9 @@ export const getAllWebSocket = async () => {
     }
 }
 
-export const getAllWebSocketPaginated = async (title, page, limit, sort) => {
+export const getAllWebSocketPaginated = async (page, limit, title, sort) => {
     try {
-        return await prodDao.getAllWebSocketPaginated(title, page, limit, sort);
+        return await prodDao.getAllWebSocketPaginated(page, limit, title, sort);
     } catch (error) {
         throw new Error(error);
     }
@@ -37,9 +37,9 @@ export const getById = async(productId) => {
     }
 }
 
-export const getByCategory = async (title, page, limit, sort) => {
+export const getByCategory = async (page, limit, title, sort) => {
     try {
-        return await prodDao.getByCategory(title, page, limit, sort);
+        return await prodDao.getByCategory(page, limit, title, sort);
     } catch (error) {
         throw new Error(error);
     }

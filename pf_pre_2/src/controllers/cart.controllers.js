@@ -24,8 +24,8 @@ export const create = async (req, res, next) => {
   try {
     const cartData = req.body;
     const newCart = await service.create(cartData);
-    if (!cart) res.status(400).json({ msg: "Bad request" });
-    res.status(200).json(cart);
+    if (!newCart) res.status(400).json({ msg: "Bad request" });
+    res.status(200).json(newCart);
   } catch (error) {
     next(error);
   }
@@ -34,8 +34,12 @@ export const addProduct = async (req, res, next) => {
   try {
     const { cid, pid } = req.params;
     let { quantity } = req.body;
+
+    if(!quantity || quantity < 1) quantity = 1;
+
     const cart = await service.addProduct(cid, pid, quantity);
     if (!cart) res.status(400).json({ msg: "Bad request" });
+
     res.status(200).json(cart);
   } catch (error) {
     next(error);

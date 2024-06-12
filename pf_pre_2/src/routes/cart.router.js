@@ -10,7 +10,7 @@ router.post("/", controller.create);
 
 router.put("/:cid/products/:pid", controller.addProduct);
 
-router.put("/:cid/products", controller.addManyProduct);
+router.put("/:cid/products", controller.updateProductQuantities);
 
 router.delete("/:cid/products/:pid", controller.delProduct);
 

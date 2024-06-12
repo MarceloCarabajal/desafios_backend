@@ -26,39 +26,39 @@ export const create = async (cart) => {
 export const addProduct = async (id, productId, quantity) => {
   try {
     //controlo que 'quantity' sea un numero valido
-    //if(!quantity || quantity <1 ) quantity = 1;
+    if(!quantity || quantity <1 ) quantity = 1;
     return await cartDao.addProduct(id, productId, quantity);
   } catch (error) {
     throw new Error(error);
   }
 };
 
-export const addManyProduct = async (id, products) => {
+export const updateProductQuantities = async (cid, products) => {
   try {
-    return await cartDao.addManyProduct(id, products);
+    return await cartDao.updateProductQuantities(cid, products);
   } catch (error) {
     throw new Error(error);
   }
 }
 
-export const delProduct = async (id, productId) => {
+export const delProduct = async (cid, pid) => {
   try {
-    return await cartDao.delProduct(id, productId)
+    return await cartDao.delProduct(cid, pid)
   } catch (error) {
     throw new Error(error);
   }
 }
-export const remove = async (id) => {
+export const remove = async (cid) => {
   try {
-    return await cartDao.delete(id);
+    return await cartDao.delete(cid);
   } catch (error) {
     throw new Error(error);
   }
 };
 
-export const cleanCart = async (id) => {
+export const cleanCart = async (cid) => {
   try {
-    return await cartDao.cleanCart(id);
+    return await cartDao.cleanCart(cid);
   } catch (error) {
     throw new Error(error);
   }

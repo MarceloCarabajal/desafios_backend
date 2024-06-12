@@ -46,22 +46,27 @@ export const addProduct = async (req, res, next) => {
   }
 };
 
-export const addManyProduct = async (req, res, next) => {
+export const updateProductQuantities = async (req, res, next) => {
   try {
     const {cid} = req.params;
-    const cart = await service.addManyProduct(cid, req.body);
-    if(!cart) res.status(400).json({ msg: "Bad request" });
-    res.status(200).json(cart);
+    const {products} = req.body;
+
+    const updatedCart = await service.updateProductQuantities(cid, products);
+
+    if(!updatedCart) res.status(400).json({ msg: "Bad request" });
+    res.status(200).json(updatedCart);
   } catch (error) {
     next(error);
   }
 };
 
-export const delProduct = async () => {
+export const delProduct = async (req, res, next) => {
   try {
     const { cid, pid } = req.params;
     const cart = await service.delProduct(cid, pid);
-    if(!cart) res.status(400).json( { msg: 'Bad request' });
+
+    if(!cart) res.status(400).json( { msg: 'Cart or Product not found' });
+    return res.status(200).json(cart);
   } catch (error) {
     next(error);
   }

@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
 import { CartModel } from "./models/cart.model.js";
 
+//extraigo ObjectId directamente de mongoose
+const { Types: { ObjectId } } = mongoose;
+
 export default class CartDaoMongoDB {
   getAll = async () => {
     try {
@@ -10,11 +13,11 @@ export default class CartDaoMongoDB {
     }
   };
 
-  getById = async (id) => {
+  getById = async (cid) => {
     try {
-      const response = await CartModel.findById(id).populate('products.product');
+      const response = await CartModel.findById(cid).populate('products.product');
       if (!response) {
-        throw new Error(`Cart with id ${id} not found`);
+        throw new Error(`Cart with id ${cid} not found`);
       } else {
         return response;
       }
@@ -34,8 +37,8 @@ export default class CartDaoMongoDB {
   addProduct = async (cartId, productId, quantity) => {
     try {
       //convertir productId y cartId a ObjectId para la comparacion
-      const cartIdObj = new mongoose.Types.ObjectId(cartId);
-      const productIdObj = new mongoose.Types.ObjectId(productId);
+      const cartIdObj = new ObjectId(cartId);
+      const productIdObj = new ObjectId(productId);
 
       // Buscar el carrito por su ID
       const cart = await CartModel.findById(cartIdObj);
@@ -63,19 +66,49 @@ export default class CartDaoMongoDB {
     }
   };
   
-  addManyProduct = async (cid, products) => {
+  updateProductQuantities = async (cartId, products) => {
     try {
-      const cart = await CartModel.findById(cid);
-      if (!cart) throw new Error(`Cart with id ${cid} not found`);
-
-      products.forEach(({ productId, quantity }) => {
-        const existingProduct = cart.products.find(p => p.product.toString() === productId);
-        if (existingProduct) {
-          existingProduct.quantity += quantity;
+      // Convertir cartId a ObjectId
+      const cartIdObj = new ObjectId(cartId);
+  
+      // Buscar el carrito por su ID
+      const cart = await CartModel.findById(cartIdObj);
+      if (!cart) throw new Error(`Cart with id ${cartId} not found`);
+  
+      // Recorrer los productos enviados en la solicitud
+      for (const { productId, quantity } of products) {
+        const productIdObj = new ObjectId(productId);
+  
+        // Buscar si el producto ya existe en el carrito
+        const existingProductIndex = cart.products.findIndex(p => p.product.equals(productIdObj));
+        if (existingProductIndex !== -1) {
+          // Si el producto ya existe, actualizar la cantidad
+          cart.products[existingProductIndex].quantity = quantity;
         } else {
-          cart.products.push({ product: productId, quantity });
+          // Si el producto no existe, agregarlo al carrito
+          cart.products.push({ product: productIdObj, quantity });
         }
-      });
+      }
+  
+      // Guardar los cambios en el carrito
+      await cart.save();
+      return cart;
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+  
+
+  delProduct = async (cartId, productId) => {
+    try {
+      //convertir productId y cartId a ObjectId para la comparacion
+      const cartIdObj = new ObjectId(cartId);
+      const productIdObj = new ObjectId(productId);
+
+      const cart = await CartModel.findById(cartIdObj);
+      if (!cart) throw new Error(`Cart with id ${cartId} not found`);
+
+      cart.products = cart.products.filter(p => !p.product.equals(productIdObj) );
 
       await cart.save();
       return cart;
@@ -84,25 +117,11 @@ export default class CartDaoMongoDB {
     }
   };
 
-  delProduct = async (id, productId) => {
+  delete = async (cid) => {
     try {
-      const cart = await CartModel.findById(id);
-      if (!cart) throw new Error(`Cart with id ${id} not found`);
-
-      cart.products = cart.products.filter(p => p.product.toString() !== productId);
-
-      await cart.save();
-      return cart;
-    } catch (error) {
-      throw new Error(error);
-    }
-  };
-
-  delete = async (id) => {
-    try {
-      const cart = await CartModel.findByIdAndDelete(id);
+      const cart = await CartModel.findByIdAndDelete(cid);
       if (!cart) {
-        throw new Error(`Cart with id ${id} not found`);
+        throw new Error(`Cart with id ${cid} not found`);
       }
       return cart;
     } catch (error) {

@@ -33,20 +33,24 @@ export default class CartDaoMongoDB {
 
   addProduct = async (cartId, productId, quantity) => {
     try {
+      //convertir productId y cartId a ObjectId para la comparacion
+      const cartIdObj = new mongoose.Types.ObjectId(cartId);
+      const productIdObj = new mongoose.Types.ObjectId(productId);
+
       // Buscar el carrito por su ID
-      const cart = await CartModel.findById(cartId);
+      const cart = await CartModel.findById(cartIdObj);
       if (!cart) {
         throw new Error(`Cart with id ${cartId} not found`);
       }
 
       // Verificar si el producto ya está en el carrito
-      const existingProductIndex = cart.products.findIndex(p => p.product.toString() === productId);
+      const existingProductIndex = cart.products.findIndex(p => p.product.equals(productIdObj));
       if (existingProductIndex !== -1) {
         // Si el producto ya existe, sumar la cantidad
         cart.products[existingProductIndex].quantity += quantity;
       } else {
         // Si el producto no existe, agregarlo al carrito
-        cart.products.push({ product: productId, quantity });
+        cart.products.push({ product: productIdObj, quantity });
       }
 
       // Guardar los cambios en el carrito

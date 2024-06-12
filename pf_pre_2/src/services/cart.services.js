@@ -58,6 +58,8 @@ export const remove = async (cid) => {
 
 export const cleanCart = async (cid) => {
   try {
+    const CartExists = await getById(cid);
+    if(!CartExists) return null;
     return await cartDao.cleanCart(cid);
   } catch (error) {
     throw new Error(error);

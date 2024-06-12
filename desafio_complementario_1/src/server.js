@@ -8,6 +8,7 @@ import productsRouter from './routes/producst.router.js';
 import cartsRouter from './routes/carts.router.js';
 //import chatRouter from './routes/chat.router.js';
 import { __dirname } from './utils.js';
+import { engine } from 'express-handlebars';
 
 //express
 const app = express(); //app es igual a la ejecucion de express
@@ -22,6 +23,11 @@ const httpServer = app.listen(PORT, () => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/', express.static(__dirname + '/public'));
+
+//Handlebars
+app.engine("handlebars", engine());
+app.set("view engine", "handlebars");
+app.set("views", __dirname + '/views');
 
 //morgan
 app.use(morgan('dev'));

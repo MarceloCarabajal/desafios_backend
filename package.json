@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "mongoose-pagination-v2": "^0.0.4",
+    "sweetalert2": "^11.11.1"
+  }
+}

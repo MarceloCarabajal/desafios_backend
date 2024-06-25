@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { isLoggedIn } from "../middlewares/validateLogin.js";
+//import { isLoggedIn } from "../middlewares/validateLogin.js";
 import * as controller from "../controllers/user.controllers.js";
 const router = Router();
 

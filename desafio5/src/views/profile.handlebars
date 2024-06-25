@@ -3,4 +3,6 @@
 <p>Email: {{user.email}}</p>
 <p>Role: {{user.role}}</p>
 
-<a href="/users/logout">Logout</a>
+<form action="/users/logout" method="post">
+    <input type="submit" value="Logout">
+</form>

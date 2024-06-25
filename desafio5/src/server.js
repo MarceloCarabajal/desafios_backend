@@ -42,10 +42,8 @@ app.use('/', express.static(__dirname + '/public'));
 //inicio de middleware de cookie parser
 app.use(cookieParser(process.env.COOKIE_KEY)) //queda disponible para cualquier parte de la app
 
-//Se inicia libreria express-sesions, es un middleware a nivel app
+//Se inicia middleware express-session
 app.use(session(storeConfig))
-//para utilizar cookies en sesiones debemos inicializar cookieParser primero
-const SESSIONSECRET = process.env.SESSION_KEY;
 
 //Configuracion de motor de plantillas Handlebars
 app.engine("handlebars", engine()); // Vamos a usar handlebars le decimos al servidor y se ejecuta a traves de la funcion engine()

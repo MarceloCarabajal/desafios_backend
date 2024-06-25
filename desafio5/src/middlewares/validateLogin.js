@@ -7,7 +7,7 @@ export const validateLogin = (req, res, next) => {
   };
   
   export const isLoggedIn = (req, res, next) => {
-    if (!req.session?.info.loggedIn) {
+    if (!req.session?.info?.loggedIn) {
       next(); // El usuario no está logueado, así que se permite continuar
     } else {
       res.redirect("/views/profile");

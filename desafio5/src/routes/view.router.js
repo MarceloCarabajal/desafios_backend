@@ -5,7 +5,8 @@ import * as controller from "../services/product.services.js";
 const router = Router();
 
 router.get("/login", isLoggedIn, (req, res) => {
-  const { error } = req.session;
+  const error = req.session?.error;
+  req.session.error = null; //limpia el error despues de renderizar
   res.render("login", { error });
 });
 
@@ -15,7 +16,7 @@ router.get("/register", isLoggedIn, (req, res) => {
   res.render("register", { error });
 });
 router.get("/profile", validateLogin, (req, res) => {
-  const user = req.session.info;
+  const user = req.session?.info;
   res.render("profile", { user });
 });
 

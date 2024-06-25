@@ -1,10 +1,5 @@
 import { Server } from "socket.io";
-//import { __dirname } from "./utils.js";
 import MessageManager from "./dao/mongodb/chat.dao.js";
-//import * as messageManager from "./services/chat.services.js";
-//import MessageManager from "./dao/filesystem/chat.dao.js"
-
-//const messageManager = new MessageManager(`${__dirname}/data/messages.json`);
 
 const messageManager = new MessageManager();
 

@@ -7,7 +7,7 @@ export const generateToken = (user) => {
         userId: user._id
     };
 
-    jwt.sign(payload, process.env.SECRET_KEY, {
+    return jwt.sign(payload, process.env.SECRET_KEY, {
         expiresIn: '1h'
     });
 };
@@ -15,11 +15,11 @@ export const generateToken = (user) => {
 export const checkAuth = async(req, res, next) => {
     try {
         const authHeader = req.get('Authorization');
-        if(!authHeader) res.status(403).json({ msg : 'Inhautorized'})
+        if(!authHeader) return res.status(403).json({ msg : 'Unhautorized'})
         const token = authHeader.split(' ')[1];
         const decode = jwt.verify(token, process.env.SECRET_KEY); //Esto decodifica el token
         const user = await services.getById(decode.userId);
-        if(!user) res.status(404).json({ msg: 'User not found'});
+        if(!user) return res.status(404).json({ msg: 'User not found'});
 
         req.user = user;
         next();

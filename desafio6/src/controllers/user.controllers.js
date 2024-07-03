@@ -91,7 +91,7 @@ export const githubResponse = (req, res, next) => {
 
 export const loginJwt = async (req, res, next) => {
     try {
-        const user = await service.login(req.body);
+        const user = await service.login(req.body.email);
         if(!user) res.json({ msg: 'Invalid credentials'});
         const token = generateToken(user);
         res.header('Authorization', token).json({ msg: 'Login ok', token});

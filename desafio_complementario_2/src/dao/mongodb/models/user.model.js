@@ -11,7 +11,12 @@ const userSchema = new Schema({
     role: { type : String, default: "user"},
     image: { type: String },
     isGithub: { type : Boolean, default: false },
-    isGoogle: { type : Boolean, default: false }
+    isGoogle: { type : Boolean, default: false },
+    cart: { type: Schema.Types.ObjectId, ref: "carts" },
+});
+
+userSchema.pre("find", function() {
+    this.populate("carts");
 })
 
 export const UserModel = model(userCollection, userSchema);

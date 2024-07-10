@@ -39,7 +39,7 @@ router.get('/oauth2/redirect/accounts.google.com', passport.authenticate('google
     })
 );
 
-router.get("/api/sessions/current", controller.current);
+router.get("/current", controller.current);
 
 router.post("/logout", controller.logout);
 

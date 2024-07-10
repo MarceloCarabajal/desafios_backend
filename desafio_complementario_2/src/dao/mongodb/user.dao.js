@@ -23,7 +23,7 @@ export default class UserDao {
 
     async getById(id) {
         try {
-          return await UserModel.findById(id);
+          return await UserModel.findById(id).populate("cart");
         } catch (error) {
           throw new Error(error.message);
         }

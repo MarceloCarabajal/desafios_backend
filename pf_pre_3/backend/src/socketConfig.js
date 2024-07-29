@@ -1,5 +1,5 @@
 import { Server } from "socket.io";
-import MessageManager from "./dao/mongodb/chat.dao.js";
+import MessageManager from "./persistence/dao/mongodb/chat.dao.js";
 
 const messageManager = new MessageManager();
 

@@ -3,8 +3,8 @@ import { Router } from "express";
 import * as controller from "../controllers/user.controllers.js";
 const router = Router();
 import passport from "passport";
-import { isAuth } from "../middlewares/isAuth.js";
-import { checkAuth } from "../middlewares/jwt.js";
+import { isAuth } from "../middlewares/isAuth-sessions.js";
+import { checkAuth } from "../middlewares/authJwt.js";
 
 //router.post("/register", passport.authenticate('register'), controller.registerResponse);
 

@@ -1,4 +1,3 @@
-import { generateToken } from "../middlewares/jwt.js";
 import * as service from "../services/user.services.js";
 import { createHash, isValidPassword } from "../utils.js";
 //import 'dotenv/config';
@@ -113,7 +112,7 @@ export const loginJwt = async (req, res, next) => {
     try {
         const user = await service.login(req.body.email);
         if(!user) res.json({ msg: 'Invalid credentials'});
-        const token = generateToken(user);
+        const token = service.generateToken(user);
         //res.header('Authorization', token).json({ msg: 'Login ok', token});
         res.cookie('token', token, { httpOnly: true }).json({ msg: 'Login ok', token})
     } catch (error) {
@@ -125,7 +124,7 @@ export const loginFront = async (req, res, next) => {
     try {
         const user = await service.login(req.body.email);
         if(!user) res.json({ msg: 'Invalid credentials'});
-        const token = generateToken(user);
+        const token = service.generateToken(user);
         //res.cookie('token', token, { httpOnly: true }).json({ msg: 'Login ok', token})
         res.header('Authorization', token).json({ msg: 'Login ok', token});
     } catch (error) {

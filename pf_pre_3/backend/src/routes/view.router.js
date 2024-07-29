@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { isLoggedIn, validateLogin } from "../middlewares/validateLogin.js";
 import * as controller from "../services/product.services.js";
-import { isAuth } from "../middlewares/isAuth.js";
+import { isAuth } from "../middlewares/isAuth-sessions.js";
 
 const router = Router();
 

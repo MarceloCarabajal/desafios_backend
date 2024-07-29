@@ -1,7 +1,7 @@
 // import ProductDaoMongoDB from "../dao/mongodb/product.dao.js";
 // const prodDao = new ProductDaoMongoDB();
 
-import persistence from '../dao/factory.js';
+import persistence from '../persistence/dao/factory.js';
 const { prodDao } = persistence;
 
 export const getAll = async(page, limit, title, sort) => {

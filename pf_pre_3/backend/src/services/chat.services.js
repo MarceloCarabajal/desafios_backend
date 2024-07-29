@@ -1,4 +1,4 @@
-import ChatDaoMongoDB from "../dao/mongodb/chat.dao.js";
+import ChatDaoMongoDB from "../persistence/dao/mongodb/chat.dao.js";
 const chatDao = new ChatDaoMongoDB();
 
 export const getAll = async () => {

@@ -1,7 +1,7 @@
 // import CartDaoMongoDB from "../dao/mongodb/cart.dao.js";
 // const cartDao = new CartDaoMongoDB();
 
-import persistence from "../dao/factory.js";
+import persistence from "../persistence/dao/factory.js";
 const { cartDao } = persistence;
 
 export const getAll = async () => {

@@ -1,17 +1,30 @@
 // import UserDao from "../dao/mongodb/user.dao.js";
 // const userDao = new UserDao();
 
-import persistence from "../dao/factory.js";
-const { userDao } = persistence; 
+import persistence from "../persistence/dao/factory.js";
+const { userDao, cartDao } = persistence; 
 
+export const generateToken = (user, time = '1h') => {
+    const payload = {
+        userId: user._id
+    };
+
+    const token = jwt.sign(payload, config.SECRET_KEY, {
+        expiresIn: time
+    });
+
+    return token;
+};
 
 export const register = async (user) => {
     try {
         // Verifico si el usuario ya existe
-        const existingUser = await userDao.getByEmail(user.email);
+        const { email, password } = user;
+        const existingUser = await userDao.getByEmail(email);
         if(existingUser) return null;
 
-        // Registro nuevo usuario
+        // Registro nuevo usuario y carrito
+        const cartUser = await cartDao.create();
         return await userDao.register(user);
     } catch (error) {
         throw new Error(error.message);

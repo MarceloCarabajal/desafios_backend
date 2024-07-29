@@ -11,6 +11,8 @@ import bcrptjs from 'bcryptjs';
 
 /**
  * Funcion que realiza el hasheo de contraseña a través de bcryptjs con el metodo hashSync
+ * Recibe password sin encriptar,
+ * retorna password encriptado
  * @param {*} password tipo String 
  * @returns password hasheada
 */
@@ -33,6 +35,6 @@ export const isValidPassword = (password, user) => {
 /*------------------------------------------------------------------------------------*/
 
 //Para crear las respuestas genericas de los controllers
-// export const createResponse = (res, statusCode, data) => {
-//         return res.status(statusCode).json(data);
-// }
+export const createResponse = (res, statusCode, data) => {
+    return res.status(statusCode).json(data);
+}

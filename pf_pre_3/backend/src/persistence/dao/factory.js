@@ -1,9 +1,11 @@
+//En este caso no es necesaio usar Factory porque vamos a manejar una sola bd, con Dao bastaria, pero es a modo de prueba
+
 import ProductDaoMongoDB from './mongodb/product.dao.js'; 
 import ProductDaoFS from './filesystem/product.dao.js';
 import CartDaoMongoDB from "./mongodb/cart.dao.js";
 import UserDaoMongoDB from "./mongodb/user.dao.js";
-import { initMongoDB } from '../db/connection.js';
-import config from '../../envConfig.js';
+import { initMongoDB } from '../../db/connection.js';
+import config from '../../../envConfig.js';
 
 let prodDao = null;
 let userDao = null;
@@ -33,7 +35,7 @@ switch (persistence) {
         prodDao = new ProductDaoFS('./src/data/products.json');
         // userDao = new UserDaoFS('./src/daos/....
         // cartDao = new
-    break;
+        break;
 }
 
 export default { userDao, prodDao, cartDao };

@@ -1,24 +1,22 @@
+//Para usar con JWT
+
 import * as services from '../services/user.services.js';
 import jwt from 'jsonwebtoken';
 //import 'dotenv/config';
 import config from '../../envConfig.js'
 
-export const generateToken = (user) => {
-    const payload = {
-        userId: user._id
-    };
-
-    const token = jwt.sign(payload, config.SECRET_KEY, {
-        expiresIn: '1h'
-    });
-
-    return token;
-};
-
+/**
+ * Middleware que verifica si el token es válido a través de la cookie 'token'
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 export const checkAuth = async(req, res, next) => {
     try {
         //const authHeader = req.get('Authorization');
         const token = req.cookies.token;
+        if( !token ) return res.status(401).json({ msg: "Unauthorized" });
         //if(!authHeader) return res.status(403).json({ msg : 'Unhautorized'})
         //const token = authHeader.split(' ')[1];
         const decode = jwt.verify(token, config.SECRET_KEY); //Esto decodifica el token
@@ -33,14 +31,14 @@ export const checkAuth = async(req, res, next) => {
         if(timeUntilExp <= 300){
             // 300 segundos = 5 minutos
             // Generar un nuevo token con un tiempo de expiracion renovado
-            const newToken = generateToken(user, "5m");
+            const newToken = await services.generateToken(user, "5m");
             console.log(">>>>Se refrescó token");
-            res.set("Authorization", `Bearer ${ newToken }`); //Agregar el nuevo token al encabezado
+            res.cookie("token", newToken, { httpOnly: true }); //Agregar el nuevo token a la cookie
         }
 
         req.user = user;
         next();
     } catch (error) {
-        res.status(403).json({ msg: 'Unhautorized'})
+        next(error);
     }
 }

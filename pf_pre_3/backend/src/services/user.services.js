@@ -3,6 +3,8 @@
 
 import persistence from "../persistence/dao/factory.js";
 const { userDao, cartDao } = persistence; 
+import jwt from 'jsonwebtoken';
+import config from '../../envConfig.js'
 
 export const generateToken = (user, time = '1h') => {
     const payload = {

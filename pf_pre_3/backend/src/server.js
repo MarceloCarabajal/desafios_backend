@@ -1,5 +1,4 @@
 import express from 'express';
-import { initMongoDB } from './db/connection.js';
 import morgan from 'morgan'
 import {errorHandler} from './middlewares/errorHandler.js';
 import 'dotenv/config';
@@ -7,7 +6,6 @@ import { configureSocket} from './socketConfig.js';
 import router from './routes/index.js';
 import { __dirname } from './utils.js';
 import { engine } from 'express-handlebars';
-import "dotenv/config";
 import cookieParser from "cookie-parser";
 import session, { Cookie } from 'express-session'; 
 import MongoStore from 'connect-mongo';
@@ -23,6 +21,10 @@ import cors from 'cors';
 const app = express(); //app es igual a la ejecucion de express
 const PORT = config.PORT;
 
+//Configuracion de middlewares
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use('/', express.static(__dirname + '/public'));
 
 // Inicio Mongo Store
 const storeConfig = {
@@ -34,19 +36,17 @@ const storeConfig = {
     secret: config.SECRET_KEY,
     resave: true,
     saveUninitialized: true,
-    cookie: { maxAge: 180000 }
+    cookie: { maxAge: 180000, httpOnly: true }
 };
 
-//Configuracion de middlewares
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use('/', express.static(__dirname + '/public'));
+
 //morgan
 app.use(morgan('dev'));
 //middleware de manejo de errores
 app.use(errorHandler);
 //middleware de cookie parser
 app.use(cookieParser(config.COOKIE_KEY)) //queda disponible para cualquier parte de la app
+
 //Se inicia middleware express-session
 app.use(session(storeConfig))
 
@@ -65,7 +65,6 @@ configureSocket(httpServer);
 
 // Passport, debe ir antes de las rutas
 app.use(passport.initialize());
-app.use(passport.session());
 
 //Configuro cors
 app.use(cors({ origin: config.REACT_APP, credentials: true }));
@@ -73,5 +72,4 @@ app.use(cors({ origin: config.REACT_APP, credentials: true }));
 //Configurar rutas
 app.use('/', router);
 
-//Inicializar MongoDB
-if(config.PERSISTENCE === 'MONGO') initMongoDB();
+export default app;

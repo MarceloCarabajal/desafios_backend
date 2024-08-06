@@ -12,7 +12,7 @@ const userSchema = new Schema({
     image: { type: String },
     isGithub: { type : Boolean, default: false },
     isGoogle: { type : Boolean, default: false },
-    cart: { type: Schema.Types.ObjectId, ref: "carts", default: [] },
+    cart: { type: Schema.Types.ObjectId, ref: "carts", default: null },
 });
 
 userSchema.pre("find", function() {

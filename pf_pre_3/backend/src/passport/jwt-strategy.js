@@ -21,6 +21,10 @@ import config from '../../envConfig.js';
 
 // passport.use('jwt', new jwtStrategy(strategyConfig, verifyToken));
 
+
+//----------------------------------------------------------------------------------------
+
+
 /* Con cookies*/
 
 const cookieExtractor = (req) => {

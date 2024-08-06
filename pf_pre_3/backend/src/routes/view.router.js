@@ -24,7 +24,7 @@ router.get("/profile", validateLogin, (req, res) => {
 router.get("/profile-github", isAuth, (req, res) => {
   console.log("req.user: ", req.user);
   const user = req.user.toObject();
-  res.render("profile", {user});
+  res.render("profile", { user });
 })
 
 router.get("/", (req, res) => {

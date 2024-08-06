@@ -12,15 +12,6 @@ export default class UserDaoMongoDB {
         }
     };
 
-    // login = async (email) => {
-    //     try {
-    //         const isLogin = await UserModel.findOne({ email }); //Esto retorna null o el usuario
-    //         return isLogin;
-    //     } catch (error) {
-    //         throw new Error(error);
-    //     }
-    // };
-
     async getById(id) {
         try {
           return await UserModel.findById(id).populate("cart");
@@ -31,7 +22,8 @@ export default class UserDaoMongoDB {
     
       async getByEmail(email) {
         try {
-          return await UserModel.findOne({ email });
+          const user = await UserModel.findOne({ email });
+          return user;
         } catch (error) {
           throw new Error(error.message);
         }

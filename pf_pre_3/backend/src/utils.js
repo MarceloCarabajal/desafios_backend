@@ -1,13 +1,9 @@
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import bcryptjs from 'bcryptjs';
 
 const __filename = fileURLToPath(import.meta.url) // Ruta del archivo
 export const __dirname = dirname(__filename)
-
-/*------------------------------------------------------------------------------------*/
-
-//Bcrypt
-import bcrptjs from 'bcryptjs';
 
 /**
  * Funcion que realiza el hasheo de contraseña a través de bcryptjs con el metodo hashSync
@@ -17,8 +13,8 @@ import bcrptjs from 'bcryptjs';
  * @returns password hasheada
 */
 export const createHash = (password) => {
-    const salt = bcrptjs.genSaltSync(10)
-    return bcrptjs.hashSync(password, salt);
+    const salt = bcryptjs.genSaltSync(10)
+    return bcryptjs.hashSync(password, salt);
 }
 
 /**
@@ -27,8 +23,11 @@ export const createHash = (password) => {
  * @param {*} user usuario existente en base de datos
  * @returns boolean
  */
-export const isValidPassword = (password, user) => {
-    return bcrptjs.compareSync(password, user.password);
+export const isValidPassword = (password, hash) => {
+    if (!password || !hash) {
+        throw new Error('Both password and hashedPassword must be provided');
+    }
+    return bcryptjs.compareSync(password, hash);
 }
 
 

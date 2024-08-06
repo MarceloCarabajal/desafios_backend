@@ -13,12 +13,13 @@ const stratetyConfig = {
 const registerOrLogin = async(accessToken, refreshToken, profile, done) => {
     try {
         console.log('Github profile:', profile);
-        const email = profile._json.email ?? '';
-        const first_name = profile._json.name.split(' ')[0] ?? '';
-        const last_name = profile._json.name.split(' ').length === 3 ? profile._json.name.split(' ')[1].concat(' ', profile._json.name.split(' ')[2]) : profile._json.name.split(' ')[1];
-    
+        const email = profile._json.email ??  `${profile.username}@github.com`;
+
         const user = await services.getByEmail(email);
         if(user) return done(null, user);
+
+        const first_name = profile._json.name;
+        const last_name = " ";
 
         const newUser = await services.register({ 
             email, 
@@ -26,7 +27,7 @@ const registerOrLogin = async(accessToken, refreshToken, profile, done) => {
             last_name,
             password: ' ',
             image: profile._json.avatar_url,
-            isGithub: true 
+            isGithub: true
         });
 
         return done(null, newUser);

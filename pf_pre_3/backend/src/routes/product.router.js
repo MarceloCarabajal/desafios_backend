@@ -4,11 +4,11 @@ import { checkAuth } from '../middlewares/authJwt.js';
 import { checkAdmin } from '../middlewares/checkAdminJwt.js';
 const router = Router();
 
-router.get('/', [checkAuth], controller.getAllProducts);
+router.get('/', controller.getAllProducts);
 
-router.get('/cat', [checkAuth], controller.getProductByCategory);
+router.get('/cat', controller.getProductByCategory);
 
-router.get('/:id', [checkAuth], controller.getProductById);
+router.get('/:id', controller.getProductById);
 
 router.post('/', [checkAuth, checkAdmin], controller.createProduct);
 

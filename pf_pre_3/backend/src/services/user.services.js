@@ -42,3 +42,19 @@ export const getByEmail = async (email) => {
         throw new Error(error.message);
     }
 }
+
+export const updateUserRole = async (userId, newRole) => {
+    try {
+        // Encuentra al usuario por ID
+        const user = await userDao.getById(userId);
+        if (!user) throw new Error('User not found');
+
+        // Actualiza el rol del usuario
+        user.role = newRole;
+        await user.save();
+
+        return user;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}

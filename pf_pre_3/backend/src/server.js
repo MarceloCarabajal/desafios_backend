@@ -10,10 +10,9 @@ import cookieParser from "cookie-parser";
 import session, { Cookie } from 'express-session'; 
 import MongoStore from 'connect-mongo';
 import passport from 'passport';
-import './passport/local-strategy.js';
+//import './passport/local-strategy.js';
 import './passport/github-strategy.js';
 import './passport/google-strategy.js';
-import './passport/jwt-strategy.js'
 import config from '../envConfig.js';
 import cors from 'cors';
 

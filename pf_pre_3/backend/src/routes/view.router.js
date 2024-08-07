@@ -1,28 +1,27 @@
 import { Router } from "express";
-import { isLoggedIn, validateLogin } from "../middlewares/validateLogin.js";
+import { checkAuth } from "../middlewares/authJwt.js";
 import * as controller from "../services/product.services.js";
-import { isAuth } from "../middlewares/isAuth-sessions.js";
 
 const router = Router();
 
-router.get("/login", isLoggedIn, (req, res) => {
+router.get("/login", (req, res) => {
   const error = req.session?.error;
   req.session.error = null; //limpia el error despues de renderizar
   res.render("login", { error });
 });
 
-router.get("/register", isLoggedIn, (req, res) => {
+router.get("/register", (req, res) => {
   const error = req.session.error;
   req.session.error = null; //limpia el error despues de renderizar
   res.render("register", { error });
 });
-router.get("/profile", validateLogin, (req, res) => {
+router.get("/profile", checkAuth, (req, res) => {
   const user = req.session?.info;
   res.render("profile", { user });
 });
 
-router.get("/profile-github", isAuth, (req, res) => {
-  console.log("req.user: ", req.user);
+router.get("/profile-github", checkAuth, (req, res) => {
+  //const user = req.user;
   const user = req.user.toObject();
   res.render("profile", { user });
 })

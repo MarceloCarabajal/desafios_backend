@@ -34,6 +34,7 @@ export const checkAuth = async(req, res, next) => {
 
         const token = req.cookies.token;
         if( !token ) return res.status(401).json({ msg: "Unauthorized" });
+
         const decode = jwt.verify(token, config.SECRET_KEY); //Esto decodifica el token
         const user = await services.getById(decode.userId);
         if(!user) return res.status(404).json({ msg: 'User not found'});
@@ -46,8 +47,8 @@ export const checkAuth = async(req, res, next) => {
         if(timeUntilExp <= 300){
             // 300 segundos = 5 minutos
             // Generar un nuevo token con un tiempo de expiracion renovado
-            const newToken = await services.generateToken(user, "5m");
-            console.log(">>>>Se refrescó token");
+            const newToken = await services.generateToken(user, "1h");
+            console.log(">>>> Se refrescó token");
             res.cookie("token", newToken, { httpOnly: true }); //Agregar el nuevo token a la cookie
             //res.set("Authorization", `Bearer ${newToken}`);
         }

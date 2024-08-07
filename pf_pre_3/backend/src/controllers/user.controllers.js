@@ -60,7 +60,8 @@ export const login = async (req, res, next) => {
 
         //Chequeo si user es admin
         if(email === config.EMAIL_ADMIN && password === config.PASSWORD_ADMIN ) {
-            user.role = "admin";
+            //Guardar los cambios en la base de datos
+            await service.updateUserRole(user._id, "admin");
         }
 
         const token = generateToken(user, "10m");

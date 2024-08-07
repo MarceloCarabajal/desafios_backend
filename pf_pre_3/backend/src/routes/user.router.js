@@ -1,5 +1,4 @@
 import { Router } from "express";
-//import { isLoggedIn } from "../middlewares/validateLogin.js";
 import * as controller from "../controllers/user.controllers.js";
 import { checkAuth } from "../middlewares/authJwt.js";
 import passport from "passport";

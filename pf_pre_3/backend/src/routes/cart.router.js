@@ -1,21 +1,25 @@
 import { Router } from "express";
 import * as controller from "../controllers/cart.controllers.js";
+import { createTicket } from "../controllers/ticket.controllers.js";
+import { checkAuth } from "../middlewares/authJwt.js";
+import { checkAdmin } from "../middlewares/checkAdminJwt.js";
 const router = Router();
 
-router.get("/", controller.getAll);
+router.get("/", [checkAuth], controller.getAll);
 
-router.get("/:cid", controller.getById);
+router.get("/:cid", [checkAuth], controller.getById);
 
-router.post("/", controller.create);
+router.post("/", [checkAuth, checkAdmin], controller.create);
 
-router.put("/:cid/products/:pid", controller.addProduct);
+router.put("/products/:pid", [checkAuth], controller.addProductToCart);
 
-router.put("/:cid/products", controller.updateProductQuantities);
+router.put("/:cid/products", [checkAuth], controller.updateProductQuantities);
 
-router.delete("/:cid/products/:pid", controller.delProduct);
+router.delete("/:cid/products/:pid", [checkAuth, checkAdmin], controller.delProductToCart);
 
-router.delete("/:cid", controller.remove);
+router.delete("/:cid", [checkAuth], controller.remove);
 
-router.delete("/cleanCart/:cid", controller.cleanCart);
+router.delete("/cleanCart/:cid", [checkAuth], controller.cleanCart);
+
 
 export default router;

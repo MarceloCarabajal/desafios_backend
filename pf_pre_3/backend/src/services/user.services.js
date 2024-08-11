@@ -2,8 +2,11 @@
 // const userDao = new UserDao();
 
 import persistence from "../persistence/dao/factory.js";
-import { createHash } from "../utils.js";
+import UserRepository from "../persistence/repository/user.repository.js";
+
 const { userDao, cartDao } = persistence;
+
+const userRepository = new UserRepository();
 
 export const register = async (user) => {
     try {
@@ -27,6 +30,16 @@ export const register = async (user) => {
     }
 };
 
+//getUserById Usando repository (DTOs)
+export const getUserById = async (id) => {
+    try {
+        return await userRepository.getUserById(id);
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
+
+//getById Sin el uso de repository (DTOs)
 export const getById = async (id) => {
     try {
         return await userDao.getById(id);

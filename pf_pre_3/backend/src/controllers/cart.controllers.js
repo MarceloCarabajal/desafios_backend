@@ -30,17 +30,24 @@ export const create = async (req, res, next) => {
     next(error);
   }
 };
-export const addProduct = async (req, res, next) => {
+export const addProductToCart = async (req, res, next) => {
   try {
-    const { cid, pid } = req.params;
+    //const { cid, pid } = req.params;
     let { quantity } = req.body;
+    const { pid } = req.params;
+    const { cart } = req.user;
 
     if(!quantity || quantity < 1) quantity = 1;
 
-    const cart = await service.addProduct(cid, pid, quantity);
-    if (!cart) res.status(400).json({ msg: "Bad request" });
-
-    res.status(200).json(cart);
+    const newProdToUserCart = await service.addProduct(
+      cart,
+      pid,
+      quantity
+    )
+    
+    //const cart = await service.addProduct(cid, pid, quantity);
+    if (!newProdToUserCart) res.status(400).json({ msg: "Error add product to cart" });
+    else res.status(200).json(newProdToUserCart);
   } catch (error) {
     next(error);
   }
@@ -60,7 +67,7 @@ export const updateProductQuantities = async (req, res, next) => {
   }
 };
 
-export const delProduct = async (req, res, next) => {
+export const delProductToCart = async (req, res, next) => {
   try {
     const { cid, pid } = req.params;
     const cart = await service.delProduct(cid, pid);

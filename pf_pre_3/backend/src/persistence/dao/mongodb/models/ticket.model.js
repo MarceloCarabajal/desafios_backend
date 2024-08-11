@@ -11,7 +11,10 @@ const ticketSchema = new Schema({
     code: { type: String, unique: true, default: generateUniqueCode },
     purchase_datetime: { type: Date, default: Date.now }, 
     amount: { type: Number, required: true, default: 0 },
-    purchaser: { type: String, required: true, unique: true } // Email del usuario asociado al carrito
+    purchaser: { type: String, required: true } // Email del usuario asociado al carrito
 });
 
-export const ticketModel = model(ticketCollection, ticketSchema);
+export const TicketModel = model(
+    ticketCollection, 
+    ticketSchema
+);

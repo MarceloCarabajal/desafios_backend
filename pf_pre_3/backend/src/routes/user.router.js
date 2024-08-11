@@ -20,7 +20,7 @@ router.post("/logout", controller.logout);
 //Github Passport
 router.get("/register-github", passport.authenticate('github', { scope: [ 'user:email ' ] }));
 
-router.get("/profile", passport.authenticate('github', {
+router.get("/profile-github", passport.authenticate('github', {
     failureRedirect: '/views/login',
     successRedirect: '/views/profile-github',
     passReqToCallback: true

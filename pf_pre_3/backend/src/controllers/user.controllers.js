@@ -1,5 +1,5 @@
 import * as service from "../services/user.services.js";
-import { createHash, isValidPassword } from "../utils.js";
+import { createHash, createResponse, isValidPassword } from "../utils.js";
 //import 'dotenv/config';
 import config from '../../envConfig.js';
 import { generateToken } from "../middlewares/authJwt.js";
@@ -75,10 +75,16 @@ export const login = async (req, res, next) => {
     }
 };
 
-export const current = (req, res, next) => {
-    res.json({
-        user: req.user,
-    });
+export const current = async (req, res, next) => {
+    try {
+        if(req.user){
+            const { _id } = req.user;
+            const user = await service.getUserById(_id);
+            createResponse(res, 200, user);
+        } else createResponse(res, 403, { msg: 'Unhauthorized'})
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 export const logout = (req, res, next) => {

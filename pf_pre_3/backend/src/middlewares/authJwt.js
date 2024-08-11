@@ -47,7 +47,7 @@ export const checkAuth = async(req, res, next) => {
         if(timeUntilExp <= 300){
             // 300 segundos = 5 minutos
             // Generar un nuevo token con un tiempo de expiracion renovado
-            const newToken = await services.generateToken(user, "1h");
+            const newToken = await generateToken(user, "1h");
             console.log(">>>> Se refrescó token");
             res.cookie("token", newToken, { httpOnly: true }); //Agregar el nuevo token a la cookie
             //res.set("Authorization", `Bearer ${newToken}`);

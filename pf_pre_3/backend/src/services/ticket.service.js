@@ -43,10 +43,18 @@ export const createPurchaseTicket = async (user) => {
     }
 };
 
-
-export const getTicketsById = async (ticket) => {
+export const getAllTickets = async () => {
     try {
-        return await ticketDao.getById(ticket);
+        return await ticketDao.getAll();
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+
+export const getTicketsById = async (tid) => {
+    try {
+        return await ticketDao.getById(tid);
     } catch (error) {
         throw new Error(error);
     }

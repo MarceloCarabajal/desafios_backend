@@ -7,22 +7,32 @@ export const createPurchaseTicket = async (req, res, next) => {
        const user = req.user;
        const ticket = await ticketService.createPurchaseTicket(user);
        if(!ticket) createResponse(res, 404, 'Error generating purchase ticket');
-       else createResponse(res, 201, 'Purchase ticket generated successfully', ticket);
+       else createResponse(res, 201, 'Purchase ticket generated successfully: ' + ticket._id);
+    } catch (error) {
+        next(error);
+    }
+};
+
+//Obtener todos los tickets
+export const getAllTickets = async (req, res, next) => {
+    try {
+        const tickets = await ticketService.getAllTickets();
+
+        if(!tickets || tickets.length === 0) {
+            return res.status(404).json({ msg: "No tickets found" });
+        }
+
+        res.status(200).json({ msg: "Tickets retrieved successfully", tickets })
     } catch (error) {
         next(error);
     }
 };
 
 //Obtener tickets por ID
-
 export const getTicketById = async (req, res, next) => {
     try {
-        const { id } = req.params;
-        const ticket = await ticketService.getTicketsById(id);
-
-        if(!ticket) {
-            return res.status(400).json({ msg: "Ticket ID is required" });
-        }
+        const { tid } = req.params;
+        const ticket = await ticketService.getTicketsById(tid);
 
         if(!ticket) {
             return res.status(404).json({ msg: "Ticket not found" });

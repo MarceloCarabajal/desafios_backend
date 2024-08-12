@@ -26,19 +26,19 @@ export default class CartDaoMongoDB {
     }
   };
 
-  addProduct = async (cartId, prodId) => {
+  addProduct = async (cartId, prodId, quantity) => {
     try {
       const existProdInCart = await this.existProductInCart(cartId, prodId);
       if(existProdInCart) {
         return await CartModel.findOneAndUpdate(
           { _id: cartId, 'products.product': prodId },
-          { $set: { 'products.$.quantity': existProdInCart.products[0].quantity + 1 }},
+          { $set: { 'products.$.quantity': existProdInCart.products[0].quantity + quantity }},
           { new: true }
         );
       } else {
         return await CartModel.findByIdAndUpdate(
           cartId,
-          { $push: { products: { product: prodId } } },
+          { $push: { products: { product: prodId, quantity } } },
           { new: true }
         );
       }

@@ -83,7 +83,7 @@ export const current = async (req, res, next) => {
             createResponse(res, 200, user);
         } else createResponse(res, 403, { msg: 'Unhauthorized'})
     } catch (error) {
-        console.log(error);
+        next(error);
     }
 };
 

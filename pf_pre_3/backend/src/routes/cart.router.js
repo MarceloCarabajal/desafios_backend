@@ -1,6 +1,5 @@
 import { Router } from "express";
 import * as controller from "../controllers/cart.controllers.js";
-import { createTicket } from "../controllers/ticket.controllers.js";
 import { checkAuth } from "../middlewares/authJwt.js";
 import { checkAdmin } from "../middlewares/checkAdminJwt.js";
 const router = Router();

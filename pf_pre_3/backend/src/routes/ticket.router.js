@@ -4,6 +4,8 @@ import { checkAuth } from '../middlewares/authJwt.js';
 
 const router = Router();
 
-router.post("/", [checkAuth], controller.createTicket);
+router.post("/purchase", [checkAuth], controller.createPurchaseTicket);
+router.get("/", [checkAuth], controller.getTicketById);
+//router.get("/", [checkAuth], controller.getTicketsByUser);
 
 export default router;

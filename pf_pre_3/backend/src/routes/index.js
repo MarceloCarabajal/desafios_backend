@@ -13,6 +13,6 @@ router.use("/carts", cartsRouter);
 router.use("/chat", chatRouter);
 router.use("/users", userRouter);
 router.use("/views", viewRouter);
-router.use("/purchase", ticketRouter);
+router.use("/tickets", ticketRouter);
 
 export default router;

@@ -1,6 +1,9 @@
 // import ProductManager from "../dao/mongodb/product.dao";
 // const productManager = new ProductManager();
 import * as service from "../services/product.service.js";
+import { HttpResponse } from "../utils/http.response.js";
+
+const httpResponse = new HttpResponse();
 
 export const getAllProducts = async (req, res, next) => {
     try {
@@ -29,10 +32,12 @@ export const getAllProducts = async (req, res, next) => {
             }
         };
 
-        if(!products) res.status(404).json( { msg: "Product not found"});
-        else res.status(200).json(response);
+        if(!products) return httpResponse.NotFound(res);
+          //res.status(404).json( { msg: "Product not found"});
+        else return httpResponse.Ok(res, products);
+        //else res.status(200).json(response);
     } catch (error) {
-        next(error.message);
+        next(error);
     }
 }
 
@@ -40,8 +45,10 @@ export const getProductById = async (req, res, next) => {
     try {
         const { id }  = req.params;
         const product = await service.getById(id);
-        if(!product) res.status(404).json({msg: 'Product not found'});
-        else res.json(product);
+        if(!product) return httpResponse.NotFound(res);
+        // res.status(404).json({msg: 'Product not found'});
+        else return httpResponse.Ok(res, product);
+        // else res.json(product);
     } catch (error) {
         next(error);
     }
@@ -72,20 +79,24 @@ export const getProductByCategory = async (req, res, next) => {
                 nextLink,
             }
         };
-        if(!products) res.status(404).json( { msg: "Product not found"});
-        else res.status(200).json(response);
+        if(!products) return httpResponse.NotFound(res);
+        // res.status(404).json( { msg: "Product not found"});
+        else return httpResponse.Ok(res, response);
+        // else res.status(200).json(response);
     } catch (error) {
-        next(error.message);
+        next(error);
     }
 }
 
 export const createProduct = async (req, res, next) => {
     try {
         const newProduct = await service.create(req.body);
-        if(!newProduct) res.status(404).json({msg: 'Error creating product'});
-        else res.json(newProduct);
+        if(!newProduct) return httpResponse.NotFound(res);
+        // res.status(404).json({msg: 'Error creating product'});
+        else return httpResponse.Ok(res, newProduct);
+        // else res.status(201).json(newProduct);
     } catch (error) {
-        next(error.message);
+        next(error);
     }
 }
 
@@ -93,10 +104,12 @@ export const updateProduct = async (req, res, next) => {
     try {
         const { id } = req.params;
         const prodUpdate = await service.update(id, req.body);
-        if(!prodUpdate) res.status(404).json({msg: 'Error update product'});
-        else res.json(prodUpdate);
+        if(!prodUpdate) return httpResponse.NotFound(res);
+        // res.status(404).json({msg: 'Error update product'});
+        else return httpResponse.Ok(res, prodUpdate);
+        // else res.status(200).json(prodUpdate);
     } catch (error) {
-        next(error.message);
+        next(error);
     }
 }
 
@@ -104,18 +117,23 @@ export const deleteProduct = async (req, res, next) => {
     try {
         const { id } = req.params;
         const prodDelete = await service.remove(id)
-        if(!prodDelete) res.status(404).json({msg: 'Error deleting product'});
-        else res.json(prodDelete);
+        if(!prodDelete) return httpResponse.NotFound(res);
+        // res.status(404).json({msg: 'Error deleting product'});
+        else return httpResponse.Ok(res, prodDelete);
+        // else res.status(200).json(prodDelete);
     } catch (error) {
-        next(error.message);
+        next(error);
     }
 };
 
 export const deleteAllProducts = async (req, res, next) => {
     try {
         const prodDeleteAll = await service.removeAll();
-        res.json({ msg: 'Successfully deleted all products' });
+        if(!prodDeleteAll) return httpResponse.NotFound(res);
+        // res.status(404).json({msg: 'Error deleting all products'});
+        else return httpResponse.Ok(res, prodDeleteAll);
+        // else res.status(200).json(prodDeleteAll);
     } catch (error) {
-        next(error.message);
+        next(error);
     }
-}
+};

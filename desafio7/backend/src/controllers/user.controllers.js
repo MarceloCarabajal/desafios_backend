@@ -73,8 +73,8 @@ export const login = async (req, res, next) => {
 
         const token = generateToken(user, "10m");
 
-        res.cookie('token', token, { httpOnly: true }).json({ msg: 'Login successful', token });
-        //return httpResponse.Ok(res, token);
+        res.cookie('token', token, { httpOnly: true });
+        return httpResponse.Ok(res, token);
         //Redirigir a perfil
         //res.redirect("/views/profile");        
     } catch (error) {

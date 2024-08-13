@@ -2,6 +2,7 @@ import { Router } from 'express';
 import * as controller from "../controllers/product.controllers.js"
 import { checkAuth } from '../middlewares/authJwt.js';
 import { checkAdmin } from '../middlewares/checkAdminJwt.js';
+
 const router = Router();
 
 router.get('/', controller.getAllProducts);

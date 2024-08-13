@@ -1,4 +1,4 @@
-import * as services from '../services/user.services.js';
+import * as services from '../services/user.service.js';
 import { Strategy as GithubStrategy } from 'passport-github2';
 import passport from 'passport'
 //import 'dotenv/config';

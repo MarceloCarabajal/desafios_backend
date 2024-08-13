@@ -1,4 +1,4 @@
-import * as service from "../services/chat.services.js";
+import * as service from "../services/chat.service.js";
 
 export const getAll = async (req, res, next) => {
     try {

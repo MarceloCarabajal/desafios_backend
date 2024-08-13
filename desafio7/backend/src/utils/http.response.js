@@ -30,7 +30,7 @@ export class HttpResponse {
         return res.status(HttpStatus.OK).json({
             status: HttpStatus.OK,
             message: errorsDictionary.OK,
-            data
+            data: data
         })
     }
 

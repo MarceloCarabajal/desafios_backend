@@ -1,6 +1,6 @@
 // import ProductManager from "../dao/mongodb/product.dao";
 // const productManager = new ProductManager();
-import * as service from "../services/product.services.js";
+import * as service from "../services/product.service.js";
 
 export const getAllProducts = async (req, res, next) => {
     try {

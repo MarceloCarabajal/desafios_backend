@@ -5,6 +5,7 @@ import chatRouter from './chat.router.js';
 import userRouter from './user.router.js';
 import viewRouter from './view.router.js';
 import ticketRouter from './ticket.router.js';
+import userMockRouter from './userMock.router.js';
 
 const router = Router();
 
@@ -14,5 +15,6 @@ router.use("/chat", chatRouter);
 router.use("/users", userRouter);
 router.use("/views", viewRouter);
 router.use("/tickets", ticketRouter);
+router.use("/usersMock", userMockRouter);
 
 export default router;

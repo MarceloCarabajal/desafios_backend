@@ -1,4 +1,4 @@
-import * as service from "../services/user.services.js";
+import * as service from "../services/user.service.js";
 import { createHash, createResponse, isValidPassword } from "../utils/utils.js";
 import { HttpResponse } from "../utils/http.response.js";
 //import 'dotenv/config';
@@ -74,6 +74,7 @@ export const login = async (req, res, next) => {
         const token = generateToken(user, "10m");
 
         res.cookie('token', token, { httpOnly: true }).json({ msg: 'Login successful', token });
+        //return httpResponse.Ok(res, token);
         //Redirigir a perfil
         //res.redirect("/views/profile");        
     } catch (error) {

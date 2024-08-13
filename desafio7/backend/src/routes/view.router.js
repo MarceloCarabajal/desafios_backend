@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { checkAuth } from "../middlewares/authJwt.js";
-import * as controller from "../services/product.services.js";
+import * as controller from "../services/product.service.js";
 
 const router = Router();
 

@@ -1,6 +1,6 @@
 import passport from 'passport';
 //import * as controllers from '../controllers/user.controllers.js'
-import * as services from '../services/user.services.js';
+import * as services from '../services/user.service.js';
 import { Strategy as LocalStrategy } from 'passport-local'; 
 import { isValidPassword } from '../utils/utils.js';
 

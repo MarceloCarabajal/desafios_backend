@@ -1,6 +1,6 @@
 //Para usar con JWT
 
-import * as services from '../services/user.services.js';
+import * as services from '../services/user.service.js';
 import jwt from 'jsonwebtoken';
 //import 'dotenv/config';
 import config from '../../envConfig.js'

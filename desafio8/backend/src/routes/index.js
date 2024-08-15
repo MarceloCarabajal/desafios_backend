@@ -6,6 +6,7 @@ import userRouter from './user.router.js';
 import viewRouter from './view.router.js';
 import ticketRouter from './ticket.router.js';
 import userMockRouter from './userMock.router.js';
+import loggerRouter from './logger.router.js';
 
 const router = Router();
 
@@ -16,5 +17,6 @@ router.use("/users", userRouter);
 router.use("/views", viewRouter);
 router.use("/tickets", ticketRouter);
 router.use("/usersMock", userMockRouter);
+router.use("/loggerTest", loggerRouter);
 
 export default router;

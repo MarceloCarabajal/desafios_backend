@@ -1,4 +1,5 @@
 import * as service from "../services/cart.service.js";
+import * as productService from "../services/product.service.js";
 import { HttpResponse } from "../utils/http.response.js";
 
 const httpResponse = new HttpResponse();
@@ -43,9 +44,18 @@ export const addProductToCart = async (req, res, next) => {
     //const { cid, pid } = req.params;
     let { quantity } = req.body;
     const { pid } = req.params;
-    const { cart } = req.user;
+    const { cart, _id, role } = req.user;
 
+    console.log(pid);
+    
     if(!quantity || quantity < 1) quantity = 1;
+
+    // Verificar si el usuario es 'premium' y si es el propietario del producto
+    const product = await service.getById(pid);
+
+    if(role==='premium' && product.owner === _id) {
+      return httpResponse.Forbidden(res, "Premium users cannot add their own product to the cart");
+    }
 
     const newProdToUserCart = await service.addProduct(
       cart,
@@ -54,7 +64,7 @@ export const addProductToCart = async (req, res, next) => {
     )
     
     //const cart = await service.addProduct(cid, pid, quantity);
-    if (!newProdToUserCart) return httpResponse.BadRequest(res) 
+    if (!newProdToUserCart) return httpResponse.BadRequest(res); 
       //res.status(400).json({ msg: "Error add product to cart" });
     else return httpResponse.Ok(res, newProdToUserCart); 
     //res.status(200).json(newProdToUserCart);

@@ -28,8 +28,6 @@ export const create = async (cart) => {
 };
 export const addProduct = async (id, productId, quantity) => {
   try {
-    //controlo que 'quantity' sea un numero valido y mayor a 0
-    if(!quantity || quantity <1 ) quantity = 1;
     return await cartDao.addProduct(id, productId, quantity);
   } catch (error) {
     throw new Error(error);

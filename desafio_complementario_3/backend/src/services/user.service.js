@@ -14,6 +14,8 @@ const userRepository = new UserRepository();
 export const register = async (user) => {
     try {
         const { email, password } = user;
+        console.log(user.role);
+        
 
         // Verifico si el usuario ya existe
         const existingUser = await userDao.getByEmail(email);
@@ -97,6 +99,15 @@ export const updatePassword = async (pass, user) => {
         //Actualizar la contraseña del usuario
         const newPass = createHash(pass);
         return await userDao.updatePassword(user._id, { password: newPass });
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+export const updateUserRole = async (user) => {
+    try {
+        const updatedUser = await userDao.updateUserRole(user);
+        return updatedUser;
     } catch (error) {
         throw new Error(error);
     }

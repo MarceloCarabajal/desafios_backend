@@ -90,11 +90,28 @@ export const getProductByCategory = async (req, res, next) => {
 
 export const createProduct = async (req, res, next) => {
     try {
-        const newProduct = await service.create(req.body);
-        if(!newProduct) return httpResponse.NotFound(res);
-        // res.status(404).json({msg: 'Error creating product'});
-        else return httpResponse.Ok(res, newProduct);
-        // else res.status(201).json(newProduct);
+        const prod = req.body;
+
+        //Obtener el usuario (owner) desde la sesion
+        const owner = req.user?._id || req.user?.email; // Elijo entre id o email como owner
+        const isPremium = req.user?.role === 'premium'; // Verificar si el usuario es premium
+
+        //Asignar el propietario (owner) solo si es premium, de lo contrario se asigna 'admin' por defecto
+        if (isPremium) {
+            prod.owner = owner;
+        } else {
+            prod.owner = 'admin';
+        }
+
+        //Crear el producto utilizando el servicio
+        const product = await service.create(prod);
+        
+        if(!product) {
+            return httpResponse.NotFound(res, product, "Error creating product");
+            // res.status(404).json({msg: 'Error creating product'});
+        }
+        return httpResponse.Ok(res, product);
+            // else res.status(201).json(newProduct);
     } catch (error) {
         next(error);
     }
@@ -103,11 +120,30 @@ export const createProduct = async (req, res, next) => {
 export const updateProduct = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const prodUpdate = await service.update(id, req.body);
-        if(!prodUpdate) return httpResponse.NotFound(res);
-        // res.status(404).json({msg: 'Error update product'});
-        else return httpResponse.Ok(res, prodUpdate);
-        // else res.status(200).json(prodUpdate);
+        const { user } = req.user; //la información del usuario está en req.user por el JWT
+        const role = user.role;
+        const product = await service.getById(id);
+
+        if(!product) {
+            return httpResponse.NotFound(res, null, "Product not found");
+        }
+
+        const owner = product.owner;
+
+        //Verificar si el usuario es el propietario del producto o si es admin
+        if(owner !== user._id && role !== 'admin'){
+            return httpResponse.Unauthorized(res, null, "You can't update another owner's product");
+        }
+
+        const updateProduct = await service.update(id, req.body);
+
+        if(!updateProduct) {
+            return httpResponse.NotFound(res, null, "Error updating product");
+            // res.status(404).json({msg: 'Error update product'});
+        } 
+        
+        return httpResponse.Ok(res, updateProduct);
+        // else res.status(200).json(updateProduct);
     } catch (error) {
         next(error);
     }
@@ -116,11 +152,29 @@ export const updateProduct = async (req, res, next) => {
 export const deleteProduct = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const prodDelete = await service.remove(id)
-        if(!prodDelete) return httpResponse.NotFound(res);
-        // res.status(404).json({msg: 'Error deleting product'});
-        else return httpResponse.Ok(res, prodDelete);
-        // else res.status(200).json(prodDelete);
+        const user = req.user; //Ya que el middleware JWT añade esta información
+        const role = user.role;
+        const product = await service.getById(id);
+
+        if(!product){
+            return httpResponse.NotFound(res, null, "Product not found");
+        }
+
+        const owner = product.owner;
+
+        //Verificar si el usuario es el propietario del producto o si es admin
+        if(owner!== user._id && role!== 'admin'){
+            return httpResponse.Unauthorized(res, null, "You can't delete another owner's product");
+        }
+
+        const deleteProduct = await service.remove(id);
+
+        if(!deleteProduct) {
+            return httpResponse.NotFound(res, null, "Error deleting product");
+            // res.status(404).json({msg: 'Error deleting product'});
+        }
+        
+        return httpResponse.Ok(res, deleteProduct);
     } catch (error) {
         next(error);
     }

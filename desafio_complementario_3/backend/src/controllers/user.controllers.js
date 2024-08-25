@@ -10,12 +10,12 @@ const httpResponse = new HttpResponse();
 
 export const register = async (req, res, next ) => {
     try {
-        const { email, password } = req.body
+        const { email, password, role } = req.body;
 
         const userData = { 
             ...req.body,
             password: createHash(password), 
-            role: "user" // Rol por defecto
+            role // Rol por defecto
         };
 
         // Registrar el usuario y crear un carrito vacío
@@ -150,4 +150,24 @@ export const updatePassword = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-}
+};
+
+export const togglePremiumRole = async (req, res, next) => {
+    try {
+        const { uid } = req.params;
+        
+        //Obtener el usuario por ID
+        const user = await service.getById(uid);
+        if(!user) return httpResponse.NotFound(res, 'User not found');
+
+        //Cambiar el rol entre 'user' y 'premium'
+        user.role = user.role === 'user' ? 'premium' : 'user';
+
+        //Guardar los cambios
+        const updatedUser = await service.updateUserRole(user);
+
+        return httpResponse.Ok(res, updatedUser);
+    } catch (error) {
+        next(error);
+    }
+};

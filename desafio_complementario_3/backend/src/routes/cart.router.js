@@ -1,7 +1,7 @@
 import { Router } from "express";
 import * as controller from "../controllers/cart.controllers.js";
 import { checkAuth } from "../middlewares/authJwt.js";
-import { checkAdmin } from "../middlewares/checkAdminJwt.js";
+import { checkAdmin } from "../middlewares/checkRoleJwt.js";
 const router = Router();
 
 router.get("/", [checkAuth], controller.getAll);

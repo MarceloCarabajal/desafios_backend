@@ -2,6 +2,7 @@ import { Router } from "express";
 import * as controller from "../controllers/user.controllers.js";
 import { checkAuth } from "../middlewares/authJwt.js";
 import passport from "passport";
+import { checkAdmin, checkAdminOrPremium } from "../middlewares/checkRoleJwt.js";
 
 const router = Router();
 
@@ -9,7 +10,7 @@ router.post("/register", controller.register);
 
 router.post('/login', controller.login);
 
-router.get("/current", [checkAuth], controller.current);
+router.get("/current", [checkAuth, checkAdminOrPremium], controller.current);
 
 router.post("/logout", controller.logout);
 
@@ -18,7 +19,7 @@ router.post("/reset-pass", checkAuth, controller.generateResetPassword);
 
 router.put("/new-pass", checkAuth, controller.updatePassword);
 
-
+router.put("/premium/:uid", [checkAuth], controller.togglePremiumRole);
 
 //---------------------------------------------------------------------------------------------------
 

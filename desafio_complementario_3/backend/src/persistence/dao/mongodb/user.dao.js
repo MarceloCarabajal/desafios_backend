@@ -36,5 +36,13 @@ export default class UserDaoMongoDB {
           throw new Error(error.message);
         }
       }
+
+      async updateUserRole(user) {
+        try {
+          const updatedUser = await UserModel.findByIdAndUpdate(user._id, { role: user.role}, { new: true });
+        } catch (error) {
+          throw new Error(error.message);
+        }
+      }
     
 }

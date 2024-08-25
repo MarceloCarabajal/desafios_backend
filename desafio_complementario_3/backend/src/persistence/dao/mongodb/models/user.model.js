@@ -8,7 +8,7 @@ const userSchema = new Schema({
     email: { type: String, required: true, unique: true}, 
     age: { type: Number }, //temporalmente borre el required:true
     password: { type: String, required: true},
-    role: { type : String, default: "user"},
+    role: { type : String, enum: ['user', 'premium', 'admin'], default: 'user'},
     image: { type: String },
     isGithub: { type : Boolean, default: false },
     isGoogle: { type : Boolean, default: false },

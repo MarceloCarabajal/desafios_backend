@@ -28,5 +28,13 @@ export default class UserDaoMongoDB {
           throw new Error(error.message);
         }
       }
+
+      async updatePassword(id, obj) {
+        try {
+          return await UserModel.findByIdAndUpdate(id, obj, { new: true });
+        } catch (error) {
+          throw new Error(error.message);
+        }
+      }
     
 }

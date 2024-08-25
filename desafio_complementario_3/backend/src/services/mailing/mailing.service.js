@@ -1,11 +1,12 @@
 import { createTransport } from 'nodemailer';
 import config from '../../../envConfig.js';
-import { resetEmailTemplate } from './resetPassTemplate.js';
+import { forgotPasswordTemplate } from './forgotPasswordTemplate.js';
 import { welcomeTemplate } from './welcomeTemplate.js';
+import { passwordResetTemplate } from './passwordResetTemplate.js';
 
 const transporter = createTransport({
     service: 'gmail',
-    port: 465,
+    port: config.PORT_GMAIL,
     secure: true,
     auth: {
         user: config.EMAIL_GMAIL,
@@ -28,13 +29,13 @@ export const sendEmail = async (user, service, token = null) => {
         service === 'register' 
         ? (msg = welcomeTemplate(first_name, email) )
         : service === 'resetPass' 
-        ? (msg = resetEmailTemplate(first_name, token) )
+        ? (msg = passwordResetTemplate(first_name, token) )
         : (msg = "");
 
         const gmailOptions = {
             from: config.EMAIL_USER,
             to: email,
-            subject: service ==='register'? 'Welcome to the Marce Store!' : 'Marce Store - Reset Password',
+            subject: service ==='register'? 'Welcome to the Marce Store!' : 'Marce Store - Password Reset',
             html: msg
         };
 

@@ -14,7 +14,9 @@ router.get("/current", [checkAuth], controller.current);
 router.post("/logout", controller.logout);
 
 //agregar boton de restablecer
-router.post("/reset-pass", checkAuth, controller.generateResetPassword)
+router.post("/reset-pass", checkAuth, controller.generateResetPassword);
+
+router.put("/new-pass", checkAuth, controller.updatePassword);
 
 
 

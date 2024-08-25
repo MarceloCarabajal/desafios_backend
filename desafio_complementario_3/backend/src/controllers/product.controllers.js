@@ -39,7 +39,7 @@ export const getAllProducts = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-}
+};
 
 export const getProductById = async (req, res, next) => {
     try {
@@ -52,7 +52,7 @@ export const getProductById = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-}
+};
 
 export const getProductByCategory = async (req, res, next) => {
     try {
@@ -86,7 +86,7 @@ export const getProductByCategory = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-}
+};
 
 export const createProduct = async (req, res, next) => {
     try {
@@ -98,7 +98,7 @@ export const createProduct = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-}
+};
 
 export const updateProduct = async (req, res, next) => {
     try {
@@ -111,7 +111,7 @@ export const updateProduct = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-}
+};
 
 export const deleteProduct = async (req, res, next) => {
     try {

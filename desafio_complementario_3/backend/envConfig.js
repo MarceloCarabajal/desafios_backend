@@ -22,5 +22,6 @@ export default {
     REACT_APP: process.env.REACT_APP,
     EMAIL_GMAIL: process.env.EMAIL_GMAIL,
     PASSWORD_GMAIL: process.env.PASSWORD_GMAIL,
-    APP_URL: process.env.APP_URL
+    APP_URL: process.env.APP_URL,
+    PORT_GMAIL: process.env.PORT_GMAIL,
 };

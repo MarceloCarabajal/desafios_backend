@@ -28,6 +28,11 @@ const productSchema = new mongoose.Schema({
         index: true,
     },
     status: {type: Boolean, default: true},
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users',
+        required: true,
+    }
 });
 
 productSchema.plugin(mongoosePaginate);

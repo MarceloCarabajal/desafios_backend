@@ -19,8 +19,8 @@ export const createHash = (password) => {
 
 /**
  * Función que compara password en string plano con password hasheada del usuario
- * @param {*} password  tipo string
- * @param {*} user usuario existente en base de datos
+ * @param {*} password  Contraeña proporcionada por el usuario sin encriptar
+ * @param {*} hash Contraseña hasheada en la base de datos
  * @returns boolean
  */
 export const isValidPassword = (password, hash) => {

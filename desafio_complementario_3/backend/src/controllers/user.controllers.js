@@ -14,8 +14,8 @@ export const register = async (req, res, next ) => {
 
         const userData = { 
             ...req.body,
-             password: createHash(password), 
-             role: "user" // Rol por defecto
+            password: createHash(password), 
+            role: "user" // Rol por defecto
         };
 
         // Registrar el usuario y crear un carrito vacío
@@ -64,12 +64,6 @@ export const login = async (req, res, next) => {
             return httpResponse.NotFound(res, "Invalid email or password");
             //return res.status(401).json({ msg: "Invalid email or password" });
             //return res.redirect("/views/login");
-        }
-
-        //Chequeo si user es admin
-        if(email === config.EMAIL_ADMIN && password === config.PASSWORD_ADMIN ) {
-            //Guardar los cambios en la base de datos
-            await service.updateUserRole(user._id, "admin");
         }
 
         const token = generateToken(user, "10m");
@@ -135,8 +129,24 @@ export const generateResetPassword = async (req, res, next) => {
         const token = await service.generateResetPassword(user);
         if(token){
             await sendEmail(user, 'resetPass', token);
+            res.cookie('tokenPass', token)
             return httpResponse.Ok(res, token)
         } else return httpResponse.BadRequest(res, 'Invalid credentials for reset password request');
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const updatePassword = async (req, res, next) => {
+    try {
+        const user = req.user;
+        const { password } = req.body;
+        const { tokenPass } = req.cookies;
+        if(!tokenPass) return httpResponse.Unauthorized(res, 'Unhautorized | Token expired');
+        const updatePass = await service.updatePassword(password, user); 
+        if(!updatePass) return httpResponse.NotFound(res, 'The password cannot be the same as the previous one');
+        res.clearCookie('tokenPass');
+        return httpResponse.Ok(res, updatePass);
     } catch (error) {
         next(error);
     }

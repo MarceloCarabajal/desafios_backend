@@ -1,7 +1,7 @@
 import winston, { format } from 'winston';
 import config from '../../envConfig.js';
 
-const { timestamp, printf, colorize, prettyPrint, combine } = format;
+const { timestamp, printf, colorize, combine } = format;
 
 const myLevels = {
     levels: {
@@ -27,10 +27,11 @@ const devLog = {
     ),
     transports: [
         new winston.transports.Console({ level: 'debug'}),
-        // new winston.transports.File({ 
-        //     filename: './logs/devErrors.log', 
-        //     level: 'debug' 
-        // }),
+        // Crear archivo de logs en modo dev
+        new winston.transports.File({ 
+            filename: './logs/devErrors.log', 
+            level: 'debug' 
+        }),
     ]
 };
 

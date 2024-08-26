@@ -46,17 +46,23 @@ export const addProductToCart = async (req, res, next) => {
     const { pid } = req.params;
     const { cart, _id, role } = req.user;
 
-    console.log(pid);
+    console.log(role);
     
     if(!quantity || quantity < 1) quantity = 1;
 
-    // Verificar si el usuario es 'premium' y si es el propietario del producto
-    const product = await service.getById(pid);
-
-    if(role==='premium' && product.owner === _id) {
-      return httpResponse.Forbidden(res, "Premium users cannot add their own product to the cart");
+    // Usar el servicio de productos para obtener el producto
+    const product = await productService.getById(pid);
+    
+    if(!product){
+      return httpResponse.NotFound(res, "Product not found");
     }
 
+    // Verificar si el usuario es 'premium' y si es el propietario del producto
+    if(role==='premium' && product.owner?.toString() === _id.toString()) {
+      return httpResponse.Forbidden(res, "Premium users cannot add their own product to the cart");
+    }  
+
+    // Agregar el producto al carrito
     const newProdToUserCart = await service.addProduct(
       cart,
       pid,
@@ -127,4 +133,4 @@ export const cleanCart =async (req, res, next ) => {
   } catch (error) {
     next(error);
   }
-}
+};

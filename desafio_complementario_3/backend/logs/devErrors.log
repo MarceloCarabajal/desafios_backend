@@ -308,3 +308,22 @@
 [31merror[39m | 08-25-2024 20:34:57 | Error: Error: Error: Cart with id 66cb8e09a9b60b8e82cf7012 not found
 [31merror[39m | 08-25-2024 20:35:52 | Error: Error: Cart with id 66cb8e09a9b60b8e82cf7012 not found
 [32minfo[39m | 08-25-2024 20:39:58 | 🚀 Server listening on port 8080 in dev mode
+[32minfo[39m | 08-25-2024 21:59:29 | 🚀 Server listening on port 8080 in dev mode
+[32minfo[39m | 08-25-2024 21:59:33 | 🚀 Server listening on port 8080 in dev mode
+[32minfo[39m | 08-25-2024 21:59:50 | 🚀 Server listening on port 8080 in dev mode
+[32minfo[39m | 08-25-2024 22:00:49 | Access granted by user with role: premium
+[31merror[39m | 08-25-2024 22:01:51 | Error: Error: Cart with id 66cbb889e6930f63f3bd306d not found
+[32minfo[39m | 08-25-2024 22:04:17 | 🚀 Server listening on port 8080 in dev mode
+[32minfo[39m | 08-25-2024 22:07:52 | 🚀 Server listening on port 8080 in dev mode
+[32minfo[39m | 08-25-2024 22:08:28 | 🚀 Server listening on port 8080 in dev mode
+[32minfo[39m | 08-25-2024 22:08:43 | 🚀 Server listening on port 8080 in dev mode
+[32minfo[39m | 08-25-2024 22:09:59 | 🚀 Server listening on port 8080 in dev mode
+[32minfo[39m | 08-25-2024 22:11:22 | Access granted by user with role: premium
+[32minfo[39m | 08-25-2024 22:14:25 | 🚀 Server listening on port 8080 in dev mode
+[32minfo[39m | 08-25-2024 22:14:46 | 🚀 Server listening on port 8080 in dev mode
+[32minfo[39m | 08-25-2024 22:15:04 | 🚀 Server listening on port 8080 in dev mode
+[32minfo[39m | 08-25-2024 22:17:34 | 🚀 Server listening on port 8080 in dev mode
+[32minfo[39m | 08-25-2024 22:18:24 | 🚀 Server listening on port 8080 in dev mode
+[32minfo[39m | 08-25-2024 22:19:31 | 🚀 Server listening on port 8080 in dev mode
+[31merror[39m | 08-25-2024 22:20:58 | Cannot read properties of undefined (reading 'toString')
+[32minfo[39m | 08-25-2024 22:21:51 | 🚀 Server listening on port 8080 in dev mode

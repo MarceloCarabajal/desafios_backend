@@ -16,12 +16,19 @@ import './passport/github-strategy.js';
 import './passport/google-strategy.js';
 import config from '../envConfig.js';
 import { logger } from './utils/logger.js';
+import swaggerUI from 'swagger-ui-express';
+import swaggerJSDoc from 'swagger-jsdoc';
+import { info } from './docs/info.js';
 
 //express
 const app = express(); //app es igual a la ejecucion de express
 const PORT = config.PORT;
 
+//swagger
+const specs = swaggerJSDoc(info);
+
 //Configuracion de middlewares
+app.use('/docs', swaggerUI.serve, swaggerUI.setup(specs));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/', express.static(__dirname + '/public'));

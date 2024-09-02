@@ -2,7 +2,7 @@
 // const prodDao = new ProductDaoMongoDB();
 
 import persistence from '../persistence/dao/factory.js';
-const { prodDao } = persistence;
+const { prodDao, userDao } = persistence;
 
 export const getAll = async(page, limit, title, sort) => {
     try {
@@ -47,6 +47,14 @@ export const getByCategory = async (page, limit, title, sort) => {
 export const create = async(prod) => {
     try {
         return await prodDao.create(prod);
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+export const getUserByRole = async (role) => {
+    try {
+        return await userDao.getByRole(role);
     } catch (error) {
         throw new Error(error);
     }

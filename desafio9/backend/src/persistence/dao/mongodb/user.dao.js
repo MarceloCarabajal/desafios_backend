@@ -44,5 +44,13 @@ export default class UserDaoMongoDB {
           throw new Error(error.message);
         }
       }
+
+      async getByRole(role) {
+        try {
+          return await UserModel.findOne({ role });
+        } catch (error) {
+          throw new Error(error.message);
+        }
+      }
     
 }

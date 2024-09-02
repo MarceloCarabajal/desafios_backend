@@ -8,7 +8,7 @@ router.get("/", [checkAuth], controller.getAll);
 
 router.get("/:cid", [checkAuth], controller.getById);
 
-router.post("/", [checkAuth, checkAdmin], controller.create);
+router.post("/", [checkAuth, checkAdmin], controller.create); //No deberia usarse ya que el carrito se crea cuando se crea un nuevo usuario automaticamente
 
 router.put("/products/:pid", [checkAuth], controller.addProductToCart);
 

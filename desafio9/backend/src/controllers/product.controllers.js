@@ -100,7 +100,13 @@ export const createProduct = async (req, res, next) => {
         if (isPremium) {
             prod.owner = owner;
         } else {
-            prod.owner = 'admin';
+            //Buscar el admin en la bd para asignar su _id como owner
+            const adminUser = await service.getUserByRole('admin');
+            if(!adminUser) {
+                return httpResponse.NotFound(res, null, "Admin user not found");
+                // res.status(404).json({msg: 'Admin user not found'});
+            }
+            prod.owner = adminUser._id;
         }
 
         //Crear el producto utilizando el servicio
@@ -120,9 +126,9 @@ export const createProduct = async (req, res, next) => {
 export const updateProduct = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const { user } = req.user; //la información del usuario está en req.user por el JWT
+        const user = req.user; //la información del usuario está en req.user por el JWT
         const role = user.role;
-        const product = await service.getById(id);
+        const product = await service.getById(id);     
 
         if(!product) {
             return httpResponse.NotFound(res, null, "Product not found");

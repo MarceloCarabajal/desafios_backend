@@ -58,13 +58,15 @@ function LoginForm() {
 }
 
 function RegisterForm() {
-  const [name, setName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [edad, setEdad] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log('Register attempt', { name, email, password });
+    console.log('Register attempt', { firstName, lastName, edad, email, password });
   };
 
   return (
@@ -73,13 +75,37 @@ function RegisterForm() {
         margin="normal"
         required
         fullWidth
-        id="name"
-        label="Nombre Completo"
-        name="name"
-        autoComplete="name"
+        id="firstName"
+        label="Nombre"
+        name="firstName"
+        autoComplete="firstName"
         autoFocus
-        value={name}
-        onChange={(e) => setName(e.target.value)}
+        value={firstName}
+        onChange={(e) => setFirstName(e.target.value)}
+      />
+      <TextField
+        margin="normal"
+        required
+        fullWidth
+        id="lastName"
+        label="Apellido"
+        name="lastName"
+        autoComplete="lastName"
+        autoFocus
+        value={lastName}
+        onChange={(e) => setLastName(e.target.value)}
+      />
+      <TextField
+        margin="normal"
+        required
+        fullWidth
+        id="edad"
+        label="Edad"
+        type="number"
+        name="edad"
+        autoComplete="edad"
+        value={edad}
+        onChange={(e) => setEdad(e.target.value)}
       />
       <TextField
         margin="normal"

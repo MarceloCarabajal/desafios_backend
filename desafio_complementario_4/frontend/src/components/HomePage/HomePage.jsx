@@ -53,29 +53,64 @@ export default function HomePage() {
 
   return (
     <Box>
-      <motion.div
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+      <Box
+        sx={{
+          height: '50vh',
+          backgroundImage: 'url(/placeholder.svg?height=500&width=1000)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          mb: 4,
+          position: 'relative',
+          overflow: 'hidden',
+        }}
       >
-        <Typography variant="h4" component="h1" gutterBottom>
-          Bienvenido a Marce Store
-        </Typography>
-      </motion.div>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0,0,0,0.5)',
+          }}
+        />
+        <motion.div
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          style={{ zIndex: 1 }}
+        >
+          <Typography variant="h2" component="h1" gutterBottom sx={{ color: 'white', textAlign: 'center' }}>
+            Bienvenido a Marce Store
+          </Typography>
+          <Typography variant="h5" sx={{ color: 'white', textAlign: 'center' }}>
+            Tu destino para accesorios de PC de alta gama
+          </Typography>
+        </motion.div>
+      </Box>
       
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
-        <Typography variant="h5" component="h2" gutterBottom sx={{ mt: 4 }}>
+        <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 4, textAlign: 'center' }}>
           Productos Destacados
         </Typography>
         <Grid container spacing={4}>
           {products.map((product) => (
             <Grid item key={product.id} xs={12} sm={6} md={4}>
               <motion.div variants={itemVariants}>
-                <Card>
+                <Card sx={{
+                  transition: '0.3s',
+                  '&:hover': {
+                    transform: 'translateY(-10px)',
+                    boxShadow: '0 0 20px rgba(0, 255, 255, 0.5)',
+                  }
+                }}>
                   <CardMedia
                     component="img"
                     height="200"
@@ -92,10 +127,10 @@ export default function HomePage() {
                   </CardContent>
                   <CardActions>
                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                      <Button size="small">Añadir al Carrito</Button>
+                      <Button size="small" variant="contained" color="primary">Añadir al Carrito</Button>
                     </motion.div>
                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                      <Button size="small">Ver Detalles</Button>
+                      <Button size="small" variant="outlined">Ver Detalles</Button>
                     </motion.div>
                   </CardActions>
                 </Card>
@@ -110,14 +145,20 @@ export default function HomePage() {
         initial="hidden"
         animate="visible"
       >
-        <Typography variant="h5" component="h2" gutterBottom sx={{ mt: 6 }}>
+        <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 6, textAlign: 'center' }}>
           Categorías
         </Typography>
         <Grid container spacing={2}>
           {categories.map((category) => (
             <Grid item key={category.id} xs={6} sm={3}>
               <motion.div variants={itemVariants}>
-                <Card>
+                <Card sx={{
+                  transition: '0.3s',
+                  '&:hover': {
+                    transform: 'scale(1.05)',
+                    boxShadow: '0 0 15px rgba(255, 105, 180, 0.5)',
+                  }
+                }}>
                   <CardMedia
                     component="img"
                     height="150"
@@ -141,7 +182,7 @@ export default function HomePage() {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5, duration: 0.5 }}
       >
-        <Typography variant="h5" component="h2" gutterBottom sx={{ mt: 6 }}>
+        <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 6, textAlign: 'center' }}>
           Contacto
         </Typography>
         <Footer />

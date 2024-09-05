@@ -73,7 +73,10 @@ configureSocket(httpServer);
 app.use(passport.initialize());
 
 //Configuro cors
-app.use(cors({ origin: config.REACT_APP, credentials: true }));
+app.use(cors({ 
+    origin: config.REACT_APP, 
+    credentials: true 
+}));
 
 //Configurar rutas
 app.use('/', router);

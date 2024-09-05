@@ -9,6 +9,7 @@ import {
   Button
 } from '@mui/material'
 import { Facebook, Twitter, Instagram, LinkedIn } from '@mui/icons-material'
+import { motion } from 'framer-motion'
 
 export default function Footer() {
   const [email, setEmail] = useState('');
@@ -23,7 +24,7 @@ export default function Footer() {
     <Box
       component="footer"
       sx={{
-        backgroundColor: 'primary.main',
+        background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
         color: 'white',
         py: 6,
         mt: 'auto',
@@ -66,14 +67,23 @@ export default function Footer() {
                 onChange={(e) => setMessage(e.target.value)}
                 sx={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
               />
-              <Button
-                type="submit"
-                variant="contained"
-                color="secondary"
-                sx={{ mt: 2 }}
-              >
-                Enviar
-              </Button>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{ 
+                    mt: 2, 
+                    backgroundColor: 'white', 
+                    color: 'black',
+                    '&:hover': {
+                      backgroundColor: 'black',
+                      color: 'white',
+                    }
+                  }}
+                >
+                  Enviar
+                </Button>
+              </motion.div>
             </form>
           </Grid>
           <Grid item xs={12} sm={4}>
@@ -97,7 +107,7 @@ export default function Footer() {
           </Grid>
         </Grid>
         <Typography variant="body2" align="center" sx={{ mt: 4 }}>
-          © 2023 PC Accessories Shop. Todos los derechos reservados.
+          © 2024 Marce Store. Todos los derechos reservados.
         </Typography>
       </Container>
     </Box>

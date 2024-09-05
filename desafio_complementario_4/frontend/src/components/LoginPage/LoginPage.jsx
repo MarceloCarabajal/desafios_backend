@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import {
   Typography,
   TextField,
@@ -6,17 +8,25 @@ import {
   Box,
   Paper,
   Tabs,
-  Tab
+  Tab,
+  Container,
+  Snackbar,
+  Alert
 } from '@mui/material'
 import { motion } from 'framer-motion'
+import { Login as LoginIcon, PersonAdd } from '@mui/icons-material'
+import { login, clearError } from '../../redux/authSlice'
+import { register } from '../../services/api'
 
 function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector((state) => state.auth);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('Login attempt', { email, password });
+    dispatch(login({ email, password }));
   };
 
   return (
@@ -45,28 +55,43 @@ function LoginForm() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        sx={{ mt: 3, mb: 2 }}
-      >
-        Iniciar Sesión
-      </Button>
+      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+          startIcon={<LoginIcon />}
+          disabled={loading}
+        >
+          {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
+        </Button>
+      </motion.div>
+      {error && <Alert severity="error">{error}</Alert>}
     </form>
   );
 }
 
-function RegisterForm() {
+function RegisterForm({ onSuccess }) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [edad, setEdad] = useState('');
+  const [age, setAge] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('Register attempt', { firstName, lastName, edad, email, password });
+    setLoading(true);
+    try {
+      const response = await register({ first_name: firstName, last_name: lastName, age, email, password });
+      onSuccess(response.data);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Error al registrarse');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -78,7 +103,7 @@ function RegisterForm() {
         id="firstName"
         label="Nombre"
         name="firstName"
-        autoComplete="firstName"
+        autoComplete="given-name"
         autoFocus
         value={firstName}
         onChange={(e) => setFirstName(e.target.value)}
@@ -90,8 +115,7 @@ function RegisterForm() {
         id="lastName"
         label="Apellido"
         name="lastName"
-        autoComplete="lastName"
-        autoFocus
+        autoComplete="family-name"
         value={lastName}
         onChange={(e) => setLastName(e.target.value)}
       />
@@ -99,13 +123,13 @@ function RegisterForm() {
         margin="normal"
         required
         fullWidth
-        id="edad"
+        id="age"
         label="Edad"
         type="number"
-        name="edad"
-        autoComplete="edad"
-        value={edad}
-        onChange={(e) => setEdad(e.target.value)}
+        name="age"
+        autoComplete="age"
+        value={age}
+        onChange={(e) => setAge(e.target.value)}
       />
       <TextField
         margin="normal"
@@ -130,49 +154,99 @@ function RegisterForm() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        sx={{ mt: 3, mb: 2 }}
-      >
-        Registrarse
-      </Button>
+      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+          startIcon={<PersonAdd />}
+          disabled={loading}
+        >
+          {loading ? 'Registrando...' : 'Registrarse'}
+        </Button>
+      </motion.div>
+      {error && <Alert severity="error">{error}</Alert>}
     </form>
   );
 }
 
 export default function LoginPage() {
   const [tabValue, setTabValue] = useState(0);
+  const [successMessage, setSuccessMessage] = useState('');
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { isAuthenticated, loading } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/profile');
+    }
+  }, [isAuthenticated, navigate]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearError());
+    };
+  }, [dispatch]);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
 
+  const handleSuccess = (data) => {
+    setSuccessMessage(data.message || 'Operación exitosa');
+    setTimeout(() => {
+      navigate('/login');
+    }, 2000);
+  };
+
   return (
-    <motion.div 
-      initial={{ opacity: 0 }} 
-      animate={{ opacity: 1 }} 
-      transition={{ duration: 0.5 }}
-      style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '70vh' }}
-    >
-      <Paper elevation={3} sx={{ p: 4, width: '100%', maxWidth: 400 }}>
-        <Typography variant="h4" component="h1" gutterBottom align="center">
-          Acceso de Usuario
-        </Typography> 
+    <Container maxWidth="sm">
+      <motion.div 
+        initial={{ opacity: 0, y: 50 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        transition={{ duration: 0.5 }}
+        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}
+      >
+        <Paper elevation={3} sx={{ p: 4, width: '100%', background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)' }}>
+          <Typography variant="h3" component="h1" gutterBottom align="center" sx={{ color: 'white', mb: 3 }}>
+            Acceso de Usuario
+          </Typography> 
+          
+          <Tabs 
+            value={tabValue} 
+            onChange={handleTabChange} 
+            centered 
+            sx={{ 
+              mb: 3,
+              '& .MuiTab-root': { color: 'white' },
+              '& .Mui-selected': { color: 'white', fontWeight: 'bold' },
+              '& .MuiTabs-indicator': { backgroundColor: 'white' }
+            }}
+          >
+            <Tab label="Iniciar Sesión" />
+            <Tab label="Registro" />
+          </Tabs>
+          
+          <Box sx={{ mt: 3, backgroundColor: 'rgba(255, 255, 255, 0.9)', borderRadius: 2, p: 3 }}>
+            {tabValue === 0 && <LoginForm />}
+            {tabValue === 1 && <RegisterForm onSuccess={handleSuccess} />}
+          </Box>
+          
+        </Paper>
         
-        <Tabs value={tabValue} onChange={handleTabChange} centered>
-          <Tab label="Iniciar Sesión" />
-          <Tab label="Registro" />
-        </Tabs>
-        
-        <Box sx={{ mt: 3 }}>
-          {tabValue === 0 && <LoginForm />}
-          {tabValue === 1 && <RegisterForm />}
-        </Box>
-        
-      </Paper>
-      
-    </motion.div>
-    );
+      </motion.div>
+      <Snackbar 
+        open={!!successMessage} 
+        autoHideDuration={6000} 
+        onClose={() => setSuccessMessage('')}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={() => setSuccessMessage('')} severity="success" sx={{ width: '100%' }}>
+          {successMessage}
+        </Alert>
+      </Snackbar>
+    </Container>
+  );
 }

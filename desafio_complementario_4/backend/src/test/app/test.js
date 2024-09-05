@@ -32,7 +32,7 @@ describe("Products API test", () => {
 describe("Carts API test", () => {
   // Test para obtener error al intentar obtener los productos de un carrito sin loguearse
   test("GET /carts/:id should return 401 if no authorization token is provided", async () => {
-    const cartId = "64e5b8d4f61a345fabf3210a"; // Cambia este valor por un carrito real
+    const cartId = "64e5b8d4f61a345fabf3210a"; // Valor de un carrito real
   
     // Hacer la petición sin token de autenticación
     const response = await fetch(`${apiUrl}/carts/${cartId}`, {

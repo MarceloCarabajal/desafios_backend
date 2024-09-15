@@ -92,11 +92,25 @@ export const current = async (req, res, next) => {
     }
 };
 
-export const logout = (req, res, next) => {
-    res.clearCookie('token');
-    res.status(200).json( {msg: 'logout successful'});
-    //res.redirect("/views/login");
+export const logout = async (req, res, next) => {
+    try {
+        console.log('req.user: ' + req.user);
+        
+        if (req.user) {
+            // Actualizar la última conexión del usuario
+            await service.updateLastConnection(req.user._id);
+        }
+
+        // Borrar el token en el navegador y en el servidor
+        res.clearCookie('token');
+
+        // Respuesta de logout exitoso
+        return httpResponse.Ok(res, 'Logout successful');
+    } catch (error) {
+        next(error);
+    }
 };
+
 
 export const githubResponse = (req, res, next) => {
     try {

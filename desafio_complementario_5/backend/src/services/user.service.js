@@ -60,6 +60,7 @@ export const login = async (email, password) => {
 
         // Actualizar última conexión del usuario
         await updateLastConnection(user._id);
+        await userDao.update(user._id, { active: true });
 
         // Devolver usuario y token
         return { user, token };

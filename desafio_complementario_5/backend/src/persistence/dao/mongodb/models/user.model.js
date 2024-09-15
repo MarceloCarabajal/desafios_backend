@@ -15,8 +15,6 @@ const userSchema = new Schema({
     cart: { type: Schema.Types.ObjectId, ref: "carts", default: null },
     last_connection: {
         type: Date,
-        //default: Date.now,
-        //expires: 24 * 60 * 60 * 1000 // 1 day
     },
     active: {
         type: Boolean,

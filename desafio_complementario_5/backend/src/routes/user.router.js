@@ -12,7 +12,7 @@ router.post('/login', controller.login);
 
 router.get("/current", [checkAuth, checkAdminOrPremium], controller.current);
 
-router.post("/logout", controller.logout);
+router.post("/logout", [checkAuth], controller.logout);
 
 //agregar boton de restablecer
 router.post("/reset-pass", checkAuth, controller.generateResetPassword);
